@@ -24,6 +24,26 @@ public class ClassSession {
     enrolledStudents = theEnrolledStudents;
   }
 
+  public Course getCourse() {
+    return course;
+  }
+
+  public Instructor getInstructor() {
+    return instructor;
+  }
+
+  public Classroom getClassroom() {
+    return classroom;
+  }
+
+  public int getMaxCapacity() {
+    return maxCapacity;
+  }
+
+  public int getSectionNumber() {
+    return sectionNumber;
+  }
+
   public boolean isFull() {
     return enrolledStudents.size() >= maxCapacity;
   }
