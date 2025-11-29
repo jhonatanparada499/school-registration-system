@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.school.app.model.Instructor;
 
-// inspiration: 
+// Inspiration: 
 // https://medium.com/@AlexanderObregon/javas-scanner-usedelimiter-method-explained-8e09e2baf831
 
 public class InstructorService {
