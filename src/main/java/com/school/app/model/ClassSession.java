@@ -28,6 +28,7 @@ public class ClassSession {
     return new Course(this.course);
   }
 
+  // Fix privacy leak in the rest of getter methods
   public Instructor getInstructor() {
     return instructor;
   }
@@ -45,6 +46,6 @@ public class ClassSession {
   }
 
   public boolean isFull() {
-    return enrolledStudents.size() >= maxCapacity;
+    return this.enrolledStudents.size() >= this.maxCapacity;
   }
 }
