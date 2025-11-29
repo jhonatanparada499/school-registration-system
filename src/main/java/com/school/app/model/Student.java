@@ -1,5 +1,6 @@
 package com.school.app.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Student {
@@ -25,6 +26,22 @@ public class Student {
       currentCredits += currentCourse.getCredits();
     }
     return currentCredits;
+  }
+
+  public List<ClassSession> getEnrolledClasses() {
+    return new ArrayList<ClassSession>(enrolledClasses);
+  }
+
+  public String getId() {
+    return this.id;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public String getMajor() {
+    return this.major;
   }
 
 }
