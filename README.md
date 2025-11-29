@@ -5,9 +5,11 @@ A desktop administrative application for a college registrar.
 
 | Task | Assigned To | Status |
 | ------------- | -------------- | -------------- |
-| Course.java | Isaias | Not Started |
+| Course.java | Isaias | In Progress |
 | Classroom.java | Camille | Not Started |
 | Student.java | Jhonatan | In Progress |
+| ClassSession.java | Jhonatan | In Progress |
+| Instructor.java | Jhonatan | In Progress |
 
 ## Project File Structure
 
