@@ -21,4 +21,14 @@ public class Instructor {
     String theCourseId = theCourse.getCourseId();
     return this.qualifiedCourses.contains(theCourseId);
   }
+
+  public int getCurrentLoad() {
+    int currentLoad = 0;
+    Course currentCourse;
+    for (ClassSession classSession : teachingAssignment) {
+      currentCourse = classSession.getCourse();
+      currentLoad += currentCourse.getCredits();
+    }
+    return currentLoad;
+  }
 }
