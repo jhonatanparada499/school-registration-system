@@ -10,7 +10,7 @@ A desktop administrative application for a college registrar.
 | Classroom.java | Camille | Not Started |
 | Student.java | Jhonatan | In Progress |
 | ClassSession.java | Jhonatan | In Progress |
-| Instructor.java | Jhonatan | In Progress |
+| Instructor.java | Jhonatan | Completed |
 
 ### Services
 | Task | Assigned To | Status |
