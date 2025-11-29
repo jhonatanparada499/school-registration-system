@@ -13,7 +13,10 @@ import com.school.app.model.Instructor;
 // https://medium.com/@AlexanderObregon/javas-scanner-usedelimiter-method-explained-8e09e2baf831
 
 public class InstructorService {
-
+  /**
+   * This static method parses Instructor.cvs and returns a
+   * HashMap<String, Instructor> instance.
+   */
   public static HashMap<String, Instructor> load() {
     HashMap<String, Instructor> instructors = new HashMap<>();
 
