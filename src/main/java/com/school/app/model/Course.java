@@ -1,7 +1,9 @@
 package com.school.app.model;
 
 public class Course {
-  // Add private variables
+  private String courseId;
+  private String name;
+  private int credits;
 
   public Course(Course otherCourse) {
 
