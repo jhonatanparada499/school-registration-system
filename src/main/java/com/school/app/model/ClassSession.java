@@ -9,4 +9,18 @@ public class ClassSession {
   private int sectionNumber;
   private int maxCapacity;
   private List<Student> enrolledStudents;
+
+  public ClassSession(Course theCourse,
+      Instructor theInstructor,
+      Classroom theClassroom,
+      int theSectionNumber,
+      int theMaxCapacity,
+      List<Student> theEnrolledStudents) {
+    course = theCourse;
+    instructor = theInstructor;
+    classroom = theClassroom;
+    sectionNumber = theSectionNumber;
+    maxCapacity = theMaxCapacity;
+    enrolledStudents = theEnrolledStudents;
+  }
 }
