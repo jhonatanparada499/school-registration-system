@@ -3,6 +3,7 @@ A desktop administrative application for a college registrar.
 
 ## Task Distribution Table  
 
+### Models
 | Task | Assigned To | Status |
 | ------------- | -------------- | -------------- |
 | Course.java | Isaias | In Progress |
@@ -10,6 +11,11 @@ A desktop administrative application for a college registrar.
 | Student.java | Jhonatan | In Progress |
 | ClassSession.java | Jhonatan | In Progress |
 | Instructor.java | Jhonatan | In Progress |
+
+### Services
+| Task | Assigned To | Status |
+| ------------- | -------------- | -------------- |
+| InstructorService.java | Jhonatan | Completed |
 
 ## Project File Structure
 
