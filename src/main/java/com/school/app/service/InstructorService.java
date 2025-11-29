@@ -20,7 +20,8 @@ public class InstructorService {
     String homeDir = "/home/jhonatan/";
     String fileDir = homeDir + "Projects/Github/jhonatanparada499/" +
         "school-registration-system/data/";
-    String filePath = fileDir + "Instructor.csv";
+    String fileName = "Instructor.csv";
+    String filePath = fileDir + fileName;
 
     // try-resource closes file automatically
     try (Scanner scanner = new Scanner(new File(filePath))) {
