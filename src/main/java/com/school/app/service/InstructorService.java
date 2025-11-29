@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.List;
 
@@ -15,10 +16,10 @@ import com.school.app.model.Instructor;
 public class InstructorService {
   /**
    * This static method parses Instructor.cvs and returns a
-   * HashMap<String, Instructor> instance.
+   * HashMap<String, Instructor> object.
    */
-  public static HashMap<String, Instructor> load() {
-    HashMap<String, Instructor> instructors = new HashMap<>();
+  public static Map<String, Instructor> load() {
+    Map<String, Instructor> instructors = new HashMap<>();
 
     String homeDir = "/home/jhonatan/";
     String fileDir = homeDir + "Projects/Github/jhonatanparada499/" +
