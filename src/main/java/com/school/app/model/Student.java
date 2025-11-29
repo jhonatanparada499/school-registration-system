@@ -6,7 +6,6 @@ public class Student {
   private String id;
   private String name;
   private String major;
-
   private List<ClassSession> enrolledClasses;
 
   public Student(String theId, String theName,
