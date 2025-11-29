@@ -5,12 +5,20 @@ public class Course {
   private String name;
   private int credits;
 
-  public Course(Course otherCourse) {
-
+  public Course(String theCourseId,
+      String theName, int theCredits) {
+    courseId = theCourseId;
+    name = theName;
+    credits = theCredits;
   }
 
-  // Add getCredits definition
+  public Course(Course otherCourse) {
+    this(otherCourse.courseId,
+        otherCourse.name,
+        otherCourse.credits);
+  }
+
   public int getCredits() {
-    return 0;
+    return this.credits;
   }
 }
