@@ -1,5 +1,5 @@
 # School Registration System
-A desktop administrative application for a college registrar
+A desktop administrative application for a college registrar.
 
 ## Task Distribution Table  
 
