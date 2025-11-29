@@ -20,10 +20,8 @@ public class Student {
 
   public int getCurrentCredits() {
     int currentCredits = 0;
-    Course currentCourse;
     for (ClassSession classSession : enrolledClasses) {
-      currentCourse = classSession.getCourse();
-      currentCredits += currentCourse.getCredits();
+      currentCredits += classSession.getCourse().getCredits();
     }
     return currentCredits;
   }
