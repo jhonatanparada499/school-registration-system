@@ -36,4 +36,9 @@ public class Instructor {
     }
     return currentLoad;
   }
+
+  public String toString() {
+    return this.name;
+  }
+
 }
