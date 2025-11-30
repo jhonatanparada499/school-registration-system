@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class RegistrationService {
 
-  public List<Instructor> findEligibleInstructors(Course theCourse) {
+  public static List<Instructor> findEligibleInstructors(Course theCourse) {
     List<Instructor> eligibleInstructors = new ArrayList<>();
 
     // load parsed Instructors.csv data
