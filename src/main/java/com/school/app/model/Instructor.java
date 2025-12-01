@@ -42,6 +42,7 @@ public class Instructor {
     this.teachingAssignment.add(theClassSession);
   }
 
+  @Override
   public String toString() {
     return this.name;
   }
