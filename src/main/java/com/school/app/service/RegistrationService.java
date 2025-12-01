@@ -1,11 +1,17 @@
 package com.school.app.service;
 
-import com.school.app.model.Instructor;
-import com.school.app.model.Course;
+import com.school.app.model.*;
 
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+
+/**
+ * Methods:
+ * 1. findElegibleInstructor(...)
+ * 2. createClassSession(...)
+ * 3. registerStudent(...)
+ */
 
 public class RegistrationService {
 
