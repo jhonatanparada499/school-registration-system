@@ -60,6 +60,12 @@ public class ClassSession {
   public List<Student> getEnrolledStudents() {
     return new ArrayList<>(enrolledStudents);
   }
+
+  // Method not specifed in project instructions
+  public void addEnrolledStudent(Student theStudent) {
+    this.enrolledStudents.add(theStudent);
+  }
+
   public boolean isFull() {
     return this.enrolledStudents.size() >= this.maxCapacity;
   }
