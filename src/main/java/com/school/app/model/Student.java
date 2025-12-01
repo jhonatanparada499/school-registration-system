@@ -30,6 +30,10 @@ public class Student {
     return new ArrayList<>(enrolledClasses);
   }
 
+  public void addEnrolledClass(ClassSession theClassSession) {
+    this.enrolledClasses.add(theClassSession);
+  }
+
   public String getId() {
     return this.id;
   }
