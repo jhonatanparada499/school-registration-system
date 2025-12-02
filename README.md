@@ -8,15 +8,17 @@ A desktop administrative application for a college registrar.
 | ------------- | -------------- | -------------- |
 | Course.java | Isaias | Completed |
 | Classroom.java | Camille | Completed |
-| Student.java | Jhonatan | In Progress |
-| ClassSession.java | Jhonatan | In Progress |
+| Student.java | Jhonatan | Completed |
+| ClassSession.java | Jhonatan | Completed |
 | Instructor.java | Jhonatan | Completed |
 
 ### Services
 | Task | Assigned To | Status |
 | ------------- | -------------- | -------------- |
 | InstructorService.java | Jhonatan | Completed |
-| RegistrationService.java | Jhonatan | In Progress |
+| RegistrationService.java | Jhonatan | Completed |
+| CourseService.java | Jhonatan | In Progress |
+| ClassroomService.java | Camille | In Progress |
 
 ## Project File Structure
 
