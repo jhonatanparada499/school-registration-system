@@ -17,7 +17,7 @@ A desktop administrative application for a college registrar.
 | ------------- | -------------- | -------------- |
 | InstructorService.java | Jhonatan | Completed |
 | RegistrationService.java | Jhonatan | Completed |
-| CourseService.java | Jhonatan | In Progress |
+| CourseService.java | Isaias | In Progress |
 | ClassroomService.java | Camille | In Progress |
 
 ## Project File Structure
@@ -48,6 +48,10 @@ school-registration-system
                         │    ├── InstructorService.java
                         │    └── StudentService.java
                         ├── view
+                        │    └── cli
+                        │        ├── Administration.java
+                        │        ├── Dashboard.java
+                        │        └── MainMenu.java
                         └── Main.java
 ```
 
