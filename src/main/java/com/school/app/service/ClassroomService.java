@@ -11,12 +11,10 @@ public class ClassroomService {
   public static Map<String, Classroom> load() {
     Map<String, Classroom> classrooms = new HashMap<>();
 
-    String homeDir = "/home/jhonatan/";
-    String fileDir = homeDir +
-        "Projects/Github/jhonatanparada499/" +
-        "school-registration-system/data/";
-    String fileName = "Classroom.csv";
-    String filePath = fileDir + fileName;
+    String homeDir = "/home/jhonatan/"; //code added to lead 
+String filePath = homeDir +
+    "Projects/Github/jhonatanparada499/" +
+    "school-registration-system/data/classroom/Classroom.csv";
 
     // try-resource closes file automatically
     try (Scanner scanner = new Scanner(new File(filePath))) {
