@@ -5,12 +5,15 @@ import com.school.app.model.*;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
 
 /**
  * Methods:
  * 1. findElegibleInstructor(...)
- * 2. createClassSession(...)
- * 3. registerStudent(...)
+ * 2. createClassSection(...)
+ * 3. saveClassSection(...)
+ * 4. registerStudent(...)
  */
 
 public class RegistrationService {
@@ -22,7 +25,7 @@ public class RegistrationService {
     }
   }
 
-  public List<Instructor> findEligibleInstructors(Course theCourse) {
+  public static List<Instructor> findEligibleInstructors(Course theCourse) {
     List<Instructor> eligibleInstructors = new ArrayList<>();
 
     // load parsed Instructors.csv data
@@ -70,6 +73,38 @@ public class RegistrationService {
     return new ClassSession(
         theCourse, theInstructor,
         theClassroom, theCapacity);
+  }
+
+  public static void saveClassSection(ClassSession theClassSection) {
+    String homeDir = "/home/jhonatan/";
+    String fileDir = homeDir +
+        "Projects/Github/jhonatanparada499/" +
+        "school-registration-system/data/";
+    String fileName = "ClassSession.csv";
+    String filePath = fileDir + fileName;
+
+    File classSessionRecords = new File(filePath);
+
+    // Logic to handle section numbers go theCourse
+    //
+    // ....
+
+    // true for append, false for overwrite
+    try (FileWriter writer = new FileWriter(classSessionRecords, true)) {
+      if (classSessionRecords.length() > 0) {
+        writer.append(System.lineSeparator());
+      }
+
+      writer.append(
+          theClassSection.getCourse().getCourseId() + "," +
+              theClassSection.getSectionNumber() + "," +
+              theClassSection.getInstructor().getName() + "," +
+              theClassSection.getClassroom().getRoomNumber() + "," +
+              theClassSection.getEnrolledStudents().size());
+    } catch (Exception e) {
+      System.out.println(e);
+      System.out.println("This execption message is from SaveClassScection");
+    }
   }
 
   public void registerStudent(Student theStudent,
