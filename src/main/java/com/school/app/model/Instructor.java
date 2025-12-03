@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * 1: boolean canTeach
  * 2: int getCurrentLoad
  * 3: void addTeachingAssignment
+ *
  */
 
 public class Instructor {
