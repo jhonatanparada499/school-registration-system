@@ -23,12 +23,15 @@ public class ClassroomService {
       scanner.useDelimiter(",|\\n"); // match: comma(,) or new line(\n)
 
       while (scanner.hasNext()) {
-        String idField = scanner.next();
-        String nameField = scanner.next();
-        int creditsField = scanner.nextInt();
+        String roomNumberField = scanner.next();
+        Boolean hasComputerField = scanner.nextBoolean();
+        Boolean hasSmartboardField = scanner.nextBoolean();
 
-        // Classroom course = new Classroom();
-        // classrooms.put(idField, course);
+        Classroom classroom = new Classroom(
+            roomNumberField,
+            hasComputerField,
+            hasSmartboardField);
+        classrooms.put(roomNumberField, classroom);
       }
 
     } catch (Exception e) {
@@ -37,5 +40,4 @@ public class ClassroomService {
 
     return classrooms;
   }
-}
 }
