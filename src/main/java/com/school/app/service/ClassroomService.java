@@ -1,43 +1,82 @@
 package com.school.app.service;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-
 import com.school.app.model.Classroom;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ClassroomService {
-  public static Map<String, Classroom> load() {
-    Map<String, Classroom> classrooms = new HashMap<>();
 
-    String homeDir = "/home/jhonatan/";
-    String fileDir = homeDir +
-        "Projects/Github/jhonatanparada499/" +
-        "school-registration-system/data/";
-    String fileName = "Classroom.csv";
-    String filePath = fileDir + fileName;
+    private final Map<String, Classroom> rooms = new HashMap<>();
 
-    // try-resource closes file automatically
-    try (Scanner scanner = new Scanner(new File(filePath))) {
-      scanner.useDelimiter(",|\\n"); // match: comma(,) or new line(\n)
-
-      while (scanner.hasNext()) {
-        String roomNumberField = scanner.next();
-        Boolean hasComputerField = scanner.nextBoolean();
-        Boolean hasSmartboardField = scanner.nextBoolean();
-
-        Classroom classroom = new Classroom(
-            roomNumberField,
-            hasComputerField,
-            hasSmartboardField);
-        classrooms.put(roomNumberField, classroom);
-      }
-
-    } catch (Exception e) {
-      System.out.println(e);
+    public Map<String, Classroom> getRooms() {
+        return rooms;
     }
 
-    return classrooms;
-  }
+    /**
+     * Instance-style loader (preferred for OOP).
+     */
+    public void loadFromCsv(String path) throws Exception {
+        rooms.clear();
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
+                // Expected CSV format: RM101,true,true
+                String[] parts = line.split(",", 3);
+                if (parts.length < 3) continue;
+
+                String room = parts[0].trim();
+                boolean hasComp = Boolean.parseBoolean(parts[1].trim());
+                boolean hasSmart = Boolean.parseBoolean(parts[2].trim());
+
+                Classroom classroom = new Classroom(room, hasComp, hasSmart);
+                rooms.put(room, classroom);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error loading Classroom CSV: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    /**
+     * Static utility-style loader (optional, from original version).
+     */
+    public static Map<String, Classroom> loadStatic(String path) {
+        Map<String, Classroom> map = new HashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
+                String[] parts = line.split(",", 3);
+                if (parts.length < 3) continue;
+
+                String room = parts[0].trim();
+                boolean hasComp = Boolean.parseBoolean(parts[1].trim());
+                boolean hasSmart = Boolean.parseBoolean(parts[2].trim());
+
+                Classroom classroom = new Classroom(room, hasComp, hasSmart);
+                map.put(room, classroom);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Static load error: " + e.getMessage());
+        }
+
+        return map;
+    }
+
+    public Classroom getByRoom(String id) {
+        return rooms.get(id);
+    }
 }
