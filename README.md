@@ -24,7 +24,7 @@ A desktop administrative application for a college registrar.
 ### Setters
 | Task | Assigned To | Status |
 | ------------- | -------------- | -------------- |
-| Define setters for Student.java | Camille | In Progress |
+| Define setters for Student.java | Camille | Completed |
 | Define setters for Instructor.java | Isaias | In Progress |
 
 ## Project File Structure
