@@ -16,12 +16,8 @@ public class ClassSessionService {
   public static List<ClassSession> load() {
     List<ClassSession> classSections = new ArrayList<>();
 
-    String homeDir = "/home/jhonatan/";
-    String fileDir = homeDir +
-        "Projects/Github/jhonatanparada499/" +
-        "school-registration-system/data/";
-    String fileName = "ClassSession.csv";
-    String filePath = fileDir + fileName;
+   // Relative path to ClassSession.csv (expects data/ClassSession.csv at project root)
+    Path filePath = Paths.get("data", "ClassSession.csv");
 
     // try-resource closes file automatically
     try (Scanner scanner = new Scanner(new File(filePath))) {
