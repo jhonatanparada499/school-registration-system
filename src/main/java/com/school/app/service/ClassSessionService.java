@@ -1,7 +1,7 @@
 package com.school.app.service;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -10,9 +10,11 @@ import com.school.app.model.Course;
 import com.school.app.model.Instructor;
 import com.school.app.model.Classroom;
 
+import java.util.List;
+
 public class ClassSessionService {
-  public static Map<String, ClassSession> load() {
-    Map<String, ClassSession> classSections = new HashMap<>();
+  public static List<ClassSession> load() {
+    List<ClassSession> classSections = new ArrayList<>();
 
     String homeDir = "/home/jhonatan/";
     String fileDir = homeDir +
