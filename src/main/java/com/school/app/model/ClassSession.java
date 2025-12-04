@@ -64,7 +64,7 @@ public class ClassSession {
 
   // Fix privacy leak in the rest of getter methods
   public Instructor getInstructor() {
-    return instructor;
+    return new Instructor(this.instructor);
   }
 
   public Classroom getClassroom() {
