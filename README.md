@@ -19,6 +19,13 @@ A desktop administrative application for a college registrar.
 | RegistrationService.java | Jhonatan | Completed |
 | CourseService.java | Isaias | In Progress |
 | ClassroomService.java | Camille | In Progress |
+| ClassSessionService.java | Jhonatan | Completed |
+
+### Setters
+| Task | Assigned To | Status |
+| ------------- | -------------- | -------------- |
+| Define setters for Student.java | Camille | In Progress |
+| Define setters for Instructor.java | Isaias | In Progress |
 
 ## Project File Structure
 
