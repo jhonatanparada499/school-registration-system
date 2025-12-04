@@ -1,5 +1,7 @@
 package com.school.app.service;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,10 +13,8 @@ public class ClassroomService {
   public static Map<String, Classroom> load() {
     Map<String, Classroom> classrooms = new HashMap<>();
 
-    String homeDir = "/home/jhonatan/"; //code added to lead 
-String filePath = homeDir +
-    "Projects/Github/jhonatanparada499/" +
-    "school-registration-system/data/classroom/Classroom.csv";
+   // Relative path to Classroom.csv (expects data/Classroom.csv at project root)
+      Path filePath = Paths.get("data", "Classroom.csv");
 
     // try-resource closes file automatically
     try (Scanner scanner = new Scanner(new File(filePath))) {

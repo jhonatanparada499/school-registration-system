@@ -17,8 +17,8 @@ A desktop administrative application for a college registrar.
 | ------------- | -------------- | -------------- |
 | InstructorService.java | Jhonatan | Completed |
 | RegistrationService.java | Jhonatan | Completed |
-| CourseService.java | Isaias | In Progress |
-| ClassroomService.java | Camille | In Progress |
+| CourseService.java | Isaias | Completed |
+| ClassroomService.java | Camille | Completed |
 | ClassSessionService.java | Jhonatan | Completed |
 
 ### Setters
