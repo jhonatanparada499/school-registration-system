@@ -90,7 +90,7 @@ public class RegistrationService {
 
     List<ClassSession> duplicatedClassSections = new ArrayList<>();
     for (ClassSession classSection : classSections) {
-      if (classSection.getCourse().getName().equals(theClassSection.getCourse().getName())) {
+      if (classSection.getCourse().getCourseId().equals(theClassSection.getCourse().getCourseId())) {
         duplicatedClassSections.add(classSection);
       }
     }
