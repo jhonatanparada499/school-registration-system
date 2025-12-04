@@ -1,5 +1,7 @@
 package com.school.app.service;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,11 +23,8 @@ public class InstructorService {
   public static Map<String, Instructor> load() {
     Map<String, Instructor> instructors = new HashMap<>();
 
-    String homeDir = "/home/jhonatan/";
-    String fileDir = homeDir + "Projects/Github/jhonatanparada499/" +
-        "school-registration-system/data/";
-    String fileName = "Instructor.csv";
-    String filePath = fileDir + fileName;
+    // Relative path to Instructor.csv (expects data/Instructor.csv at project root)
+      Path filePath = Paths.get("data", "Instructor.csv");
 
     // try-resource closes file automatically
     try (Scanner scanner = new Scanner(new File(filePath))) {
