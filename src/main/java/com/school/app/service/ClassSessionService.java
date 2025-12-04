@@ -59,13 +59,12 @@ public class ClassSessionService {
             maxCapacityField,
             enrolledStudentsField);
 
-        classSections.put(
-            courseField + "-" + sectionNumberField,
-            classSection);
+        classSections.add(classSection);
       }
 
     } catch (Exception e) {
-      System.out.println(e);
+      System.out.println("From ClassSessionService");
+      e.printStackTrace();
     }
 
     return classSections;
