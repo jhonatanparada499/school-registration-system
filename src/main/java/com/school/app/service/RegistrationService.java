@@ -106,10 +106,10 @@ public class RegistrationService {
     // true for append, false for overwrite
     try (FileWriter writer = new FileWriter(classSessionRecords, true)) {
       if (classSessionRecords.length() > 0) {
-        writer.append(System.lineSeparator());
+        writer.write(System.lineSeparator());
       }
 
-      writer.append(
+      writer.write(
           theClassSection.getCourse().getCourseId() + "," +
               theClassSection.getInstructor().getName() + "," +
               theClassSection.getClassroom().getRoomNumber() + "," +
