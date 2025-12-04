@@ -56,4 +56,22 @@ public class Student {
     return this.major;
   }
 
+   public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setMajor(String major) {
+    this.major = major;
+  }
+
+  public void setEnrolledClasses(List<ClassSession> enrolledClasses) {
+    this.enrolledClasses = enrolledClasses;
+  }
+}
+
+
 }
