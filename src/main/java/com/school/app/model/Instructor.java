@@ -56,8 +56,24 @@ public class Instructor {
   public List<ClassSession> getTeachingAssignment() {
     return new ArrayList<>(this.teachingAssignment);
   }
+    //Setters
+   public void setId(String id) {
+    this.id = id;
+  }
 
-  public boolean canTeach(Course theCourse) {
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setQualifiedCourses(List<String> qualifiedCourses) {
+    this.qualifiedCourses = new ArrayList<>(qualifiedCourses);
+  }
+
+  public void setTeachingAssignment(List<ClassSession> teachingAssignment) {
+    this.teachingAssignment = new ArrayList<>(teachingAssignment);
+  }
+  
+   public boolean canTeach(Course theCourse) {
     String theCourseId = theCourse.getCourseId();
     return this.qualifiedCourses.contains(theCourseId);
   }
