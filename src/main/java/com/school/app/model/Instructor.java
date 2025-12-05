@@ -78,5 +78,4 @@ public class Instructor {
   public String toString() {
     return this.name;
   }
-
 }
