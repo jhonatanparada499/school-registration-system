@@ -51,6 +51,7 @@ public class ClassSessionService {
         Classroom classroom = classrooms.get(classroomField);
 
         ClassSession classSection = new ClassSession(
+            idField,
             course,
             instructor,
             classroom,
