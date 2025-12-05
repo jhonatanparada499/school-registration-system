@@ -86,6 +86,8 @@ public class RegistrationService {
       newClassSectionNumber = duplicatedclassSections.size() + 1;
     }
 
+    // When creating a new class section, it makes sense that it has
+    // zero students enrolled
     return new ClassSession(
         newId,
         theCourse,
@@ -102,23 +104,11 @@ public class RegistrationService {
 
     File classSessionRecords = new File(filePath);
 
-    List<ClassSession> classSections = new ArrayList<>(
-        ClassSessionService.load());
-
-    List<ClassSession> duplicatedClassSections = new ArrayList<>();
-    for (ClassSession classSection : classSections) {
-      if (classSection.getCourse().getCourseId().equals(theClassSection.getCourse().getCourseId())) {
-        duplicatedClassSections.add(classSection);
-      }
-    }
-
-    if (!duplicatedClassSections.isEmpty()) {
-      ClassSession lastClassSection = duplicatedClassSections.get(
-          duplicatedClassSections.size() - 1);
-      int lastClassSectionNumber = lastClassSection.getSectionNumber();
-      int newSectionNumber = lastClassSectionNumber + 1;
-      theClassSection.setSectionNumber(newSectionNumber);
-    }
+    // Validate if the class section already exists,
+    // if so, remove it because below will be
+    // rewritten but with updated values of enrolled
+    // students
+    // add dependency to maven project
 
     // true for append, false for overwrite
     try (FileWriter writer = new FileWriter(classSessionRecords, true)) {
