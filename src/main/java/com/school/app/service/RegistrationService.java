@@ -117,7 +117,8 @@ public class RegistrationService {
       }
 
       writer.write(
-          theClassSection.getCourse().getCourseId() + "," +
+          theClassSection.getId() + "," +
+              theClassSection.getCourse().getCourseId() + "," +
               theClassSection.getInstructor().getId() + "," +
               theClassSection.getClassroom().getRoomNumber() + "," +
               theClassSection.getSectionNumber() + "," +
