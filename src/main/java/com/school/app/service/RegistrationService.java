@@ -43,13 +43,13 @@ public class RegistrationService {
     return eligibleInstructors;
   }
 
-  // inconsistency: it would make more sense to create a class session
   public ClassSession createClassSection(
       Course theCourse,
       Instructor theInstructor,
       Classroom theClassroom,
       int theCapacity) throws SchoolException {
 
+    // Preconditions
     if (!theInstructor.canTeach(theCourse)) {
       throw new SchoolException("Instructor load exceeded");
     }
@@ -59,13 +59,26 @@ public class RegistrationService {
       throw new SchoolException("Instructor load exceeded");
     }
 
-    // Create session or section?
-    // Incosistency: is theCapacity the max capicity or initial?
-    ClassSession classSection = new ClassSession(theCourse,
-        theInstructor, theClassroom, theCapacity);
+    // get Classesctions from ClassSection.csv.
+    Map<Integer, ClassSession> classSections = ClassSessionService.load();
 
-    // Add section to the instructor
-    theInstructor.addTeachingAssignment(classSection);
+    // Get the class section with greatest id value and Calculate new id
+    int greatestClassSectionId = 0;
+    for (Integer id : classSections.keySet()) {
+      if (id > greatestClassSectionId) {
+        greatestClassSectionId = id;
+      }
+    }
+    int newId = greatestClassSectionId + 1;
+
+    // Check to see if the course id is already in the db
+    // if so, increment the section number
+    List<ClassSession> duplicatedclassSections = new ArrayList<>();
+    for (ClassSession classSection : classSections.values()) {
+      if (classSection.getCourse().getCourseId().equals(theCourse.getCourseId())) {
+        duplicatedclassSections.add(classSection);
+      }
+    }
 
     // Does storing (this) to the system mean to write it to Classroom.csv?
     // It would make sense to have a ClassSession.csv file
