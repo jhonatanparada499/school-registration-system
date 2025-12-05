@@ -130,7 +130,7 @@ public class RegistrationService {
     }
   }
 
-  public void registerStudent(Student theStudent,
+  public static void registerStudent(Student theStudent,
       ClassSession theSection) {
 
     // preconditions: 1. Student is not it the class, 2. the "section"
