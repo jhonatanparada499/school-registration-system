@@ -20,7 +20,8 @@ public class CourseService {
 
     // try-resource closes file automatically
     try (Scanner scanner = new Scanner(new File(filePath))) {
-      scanner.useDelimiter(",|\\n"); // match: comma(,) or new line(\n)
+      while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
 
       while (scanner.hasNext()) {
         String idField = scanner.next();

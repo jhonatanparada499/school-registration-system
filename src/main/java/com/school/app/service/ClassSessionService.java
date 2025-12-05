@@ -23,8 +23,8 @@ public class ClassSessionService {
 
     // try-resource closes file automatically
     try (Scanner scanner = new Scanner(new File(filePath))) {
-      while (scanner.hasNext()) {
-        String line = scanner.next();
+      while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
 
         if (line.trim().isEmpty()) {
           continue;
