@@ -28,6 +28,14 @@ public class Student {
     enrolledClasses = theEnrolledClasses;
   }
 
+  public Student(String theId, String theName,
+      String theMajor) {
+    id = theId;
+    name = theName;
+    major = theMajor;
+    // enrolledClasses = new A;
+  }
+
   public int getCurrentCredits() {
     int currentCredits = 0;
     for (ClassSession classSession : enrolledClasses) {
