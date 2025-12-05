@@ -3,7 +3,7 @@ package com.school.app.service;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -12,11 +12,9 @@ import com.school.app.model.Course;
 import com.school.app.model.Instructor;
 import com.school.app.model.Classroom;
 
-import java.util.List;
-
 public class ClassSessionService {
-  public static List<ClassSession> load() {
-    List<ClassSession> classSections = new ArrayList<>();
+  public static Map<Integer, ClassSession> load() {
+    Map<Integer, ClassSession> classSections = new HashMap<>();
 
     // Relative path to ClassSession.csv (expects data/ClassSession.csv at project
     // root)
@@ -59,7 +57,9 @@ public class ClassSessionService {
             maxCapacityField,
             enrolledStudentsField);
 
-        classSections.add(classSection);
+        classSections.put(
+            idField,
+            classSection);
       }
 
     } catch (Exception e) {
