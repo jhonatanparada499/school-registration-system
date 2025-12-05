@@ -32,9 +32,10 @@ public class ClassSessionService {
 
         String[] columns = line.split(",");
 
-        String courseField = columns[0];
-        String instructorIdField = columns[1];
-        String classroomField = columns[2];
+        int idField = Integer.parseInt(columns[0]);
+        String courseField = columns[1];
+        String instructorIdField = columns[2];
+        String classroomField = columns[3];
 
         int sectionNumberField = Integer.parseInt(columns[3]);
         int maxCapacityField = Integer.parseInt(columns[4]);

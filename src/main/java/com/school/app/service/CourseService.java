@@ -23,10 +23,15 @@ public class CourseService {
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
 
-      while (scanner.hasNext()) {
-        String idField = scanner.next();
-        String nameField = scanner.next();
-        int creditsField = scanner.nextInt();
+        if (line.trim().isEmpty()) {
+          continue;
+        }
+
+        String[] columns = line.split(",");
+
+        String idField = columns[0];
+        String nameField = columns[1];
+        int creditsField = Integer.parseInt(columns[2]);
 
         Course course = new Course(idField,
             nameField, creditsField);

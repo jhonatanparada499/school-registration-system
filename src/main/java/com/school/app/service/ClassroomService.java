@@ -22,10 +22,16 @@ public class ClassroomService {
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
 
-      while (scanner.hasNext()) {
-        String roomNumberField = scanner.next();
-        Boolean hasComputerField = scanner.nextBoolean();
-        Boolean hasSmartboardField = scanner.nextBoolean();
+        // ignores empty lines in case csv has extra spaces
+        if (line.trim().isEmpty()) {
+          continue;
+        }
+
+        String[] columns = line.split(",");
+
+        String roomNumberField = columns[0];
+        boolean hasComputerField = Boolean.parseBoolean(columns[1]);
+        boolean hasSmartboardField = Boolean.parseBoolean(columns[2]);
 
         Classroom classroom = new Classroom(
             roomNumberField,

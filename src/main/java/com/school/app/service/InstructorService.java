@@ -32,13 +32,20 @@ public class InstructorService {
       while (scanner.hasNextLine()) {
         String line = scanner.nextLine();
 
-      while (scanner.hasNext()) {
-        String idField = scanner.next();
-        String nameField = scanner.next();
-        String qualifiedCoursesField = scanner.next();
+        if (line.trim().isEmpty()) {
+          continue;
+        }
+
+        String[] columns = line.split(",");
+
+        // If records columsn are missing and Exception will be thrown
+        String idField = columns[0];
+        String nameField = columns[1];
+        String qualifiedCoursesField = columns[2];
 
         // split field by the pipe character
         String[] qualifiedCoursesArray = qualifiedCoursesField.split("\\|");
+
         List<String> qualifiedCourses = new ArrayList<>(
             Arrays.asList(qualifiedCoursesArray));
 
