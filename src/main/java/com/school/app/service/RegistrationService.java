@@ -150,9 +150,16 @@ public class RegistrationService {
       System.out.println("Student and Course credits surpass 18");
       return;
     }
+    //
+    //
+    // Work needs to be continued here
 
     theSection.addEnrolledStudent(theStudent);
+    // saveClassSection(theSection);
     theStudent.addEnrolledClass(theSection);
+    // create a method called saveStudent()
+    // saveStudent(theStudent)
+
   }
 
 }
