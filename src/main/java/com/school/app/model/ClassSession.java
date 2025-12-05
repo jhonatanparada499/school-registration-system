@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public class ClassSession {
+  private int id;
   private Course course;
   private Instructor instructor;
   private Classroom classroom;
@@ -58,6 +59,10 @@ public class ClassSession {
     enrolledStudents = new ArrayList<>();
   }
 
+  public int getId() {
+    return this.id;
+  }
+
   public Course getCourse() {
     return new Course(this.course);
   }
@@ -77,6 +82,10 @@ public class ClassSession {
 
   public int getSectionNumber() {
     return sectionNumber;
+  }
+
+  public void setId(int theId) {
+    this.id = theId;
   }
 
   public void setSectionNumber(int theSectionNumber) {
