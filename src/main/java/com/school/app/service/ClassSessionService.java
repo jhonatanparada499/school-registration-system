@@ -61,11 +61,9 @@ public class ClassSessionService {
             maxCapacityField,
             enrolledStudentsIds);
 
-        System.out.println("ClassSection passed the test");
         classSections.put(
             idField,
             classSection);
-        System.out.println("put action passed the test");
       }
 
     } catch (Exception e) {
