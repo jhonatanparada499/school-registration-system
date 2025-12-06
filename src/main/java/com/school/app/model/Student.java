@@ -87,7 +87,4 @@ public class Student {
     this.major = major;
   }
 
-  public void setEnrolledClasses(List<ClassSession> enrolledClasses) {
-    this.enrolledClasses = enrolledClasses;
-  }
 }
