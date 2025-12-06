@@ -18,8 +18,7 @@ public class Administration {
         ClassSectionCreator.display();
         break;
       case 2:
-        System.out.println("Still working in this area");
-        System.exit(0);
+        StudentRegistrator.display();
         break;
       case 3:
         MainMenu.display();
