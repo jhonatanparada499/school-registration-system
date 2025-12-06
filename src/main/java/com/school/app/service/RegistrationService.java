@@ -100,8 +100,7 @@ public class RegistrationService {
         theInstructorId,
         theClassroomId,
         newClassSectionNumber,
-        theCapacity,
-        0);
+        theCapacity);
   }
 
   public static void saveClassSection(ClassSession theClassSection) {
