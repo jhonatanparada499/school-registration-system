@@ -59,16 +59,16 @@ public class ClassSession {
     return this.id;
   }
 
-  public Course getCourse() {
-    return new Course(this.course);
+  public String getCourse() {
+    return this.course;
   }
 
   // Fix privacy leak in the rest of getter methods
-  public Instructor getInstructor() {
-    return new Instructor(this.instructor);
+  public String getInstructor() {
+    return this.instructor;
   }
 
-  public Classroom getClassroom() {
+  public String getClassroom() {
     return classroom;
   }
 
