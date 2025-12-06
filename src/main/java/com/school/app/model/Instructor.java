@@ -63,17 +63,19 @@ public class Instructor {
   }
 
   public int getCurrentLoad() {
-    int currentLoad = 0;
-    for (ClassSession classSession : this.teachingAssignment) {
-      currentLoad += classSession.getCourse().getCredits();
-    }
-    return currentLoad;
+    // int currentLoad = 0;
+    // for (ClassSession classSession : this.teachingAssignment) {
+    // currentLoad += classSession.getCourse().getCredits();
+    // }
+    // return currentLoad;
+    System.out.println("still working in get current load");
+    return 0;
   }
 
   // method not specified if lab instructions
-  public void addTeachingAssignment(ClassSession theClassSession) {
-    this.teachingAssignment.add(theClassSession);
-  }
+  // public void addTeachingAssignment(ClassSession theClassSession) {
+  // this.teachingAssignment.add(theClassSession);
+  // }
 
   public String toString() {
     return this.name;
