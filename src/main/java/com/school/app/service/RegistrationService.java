@@ -89,8 +89,9 @@ public class RegistrationService {
       }
     }
 
-    // The class Section number is the same as the Id
-    int newClassSectionNumber = newId;
+    // The class Section number is calculated based on duplicates
+    // if not duplicates the default is 1
+    int newClassSectionNumber = duplicatedclassSections.size() + 1;
 
     // When creating a new class section, it makes sense that it has
     // zero students enrolled
