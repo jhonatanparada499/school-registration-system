@@ -56,8 +56,9 @@ public class Instructor {
   public List<String> getTeachingAssignment() {
     return new ArrayList<>(this.teachingAssignment);
   }
-    //Setters
-   public void setId(String id) {
+
+  // Setters
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -69,11 +70,11 @@ public class Instructor {
     this.qualifiedCourses = new ArrayList<>(qualifiedCourses);
   }
 
-  public void setTeachingAssignment(List<ClassSession> teachingAssignment) {
+  public void setTeachingAssignment(List<String> teachingAssignment) {
     this.teachingAssignment = new ArrayList<>(teachingAssignment);
   }
-  
-   public boolean canTeach(Course theCourse) {
+
+  public boolean canTeach(Course theCourse) {
     String theCourseId = theCourse.getCourseId();
     return this.qualifiedCourses.contains(theCourseId);
   }
