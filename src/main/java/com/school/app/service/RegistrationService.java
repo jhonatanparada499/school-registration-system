@@ -59,9 +59,9 @@ public class RegistrationService {
     // Classroom theClassroom = ClassroomService.load().get(theClassroomId);
 
     // Preconditions
-    if (!theInstructor.canTeach(theCourse)) {
-      throw new SchoolException("Instructor load exceeded");
-    }
+    // if (!theInstructor.canTeach(theCourse)) {
+    // throw new SchoolException("Instructor load exceeded");
+    // }
 
     if (theInstructor.getCurrentLoad() +
         theCourse.getCredits() > 9) {
