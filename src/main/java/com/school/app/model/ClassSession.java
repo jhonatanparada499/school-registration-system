@@ -90,17 +90,25 @@ public class ClassSession {
 
   // Method not specified in project instructions
   // This method is similar to the one in Student.java
-  public List<Student> getEnrolledStudents() {
-    return new ArrayList<>(enrolledStudents);
+  public List<String> getEnrolledStudents() {
+    return new ArrayList<>(enrolledIdStudents);
+  }
+
+  public String getEnrolledStudentsSeparatedByPipe() {
+    String result = "";
+    for (String studentId : enrolledIdStudents) {
+      result += studentId + "|";
+    }
+    return result;
   }
 
   // Method not specifed in project instructions
   public void addEnrolledStudent(Student theStudent) {
-    this.enrolledStudents.add(theStudent);
+    this.enrolledIdStudents.add(theStudent.getId());
   }
 
   public boolean isFull() {
-    return this.enrolledStudents.size() >= this.maxCapacity;
+    return this.enrolledIdStudents.size() >= this.maxCapacity;
   }
 
 }
