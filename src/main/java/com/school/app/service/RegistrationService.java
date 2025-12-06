@@ -89,19 +89,16 @@ public class RegistrationService {
       }
     }
 
-    // Calculate class section number dynamically
-    int newClassSectionNumber = 1;
-    if (!duplicatedclassSections.isEmpty()) {
-      newClassSectionNumber = duplicatedclassSections.size() + 1;
-    }
+    // The class Section number is the same as the Id
+    int newClassSectionNumber = newId;
 
     // When creating a new class section, it makes sense that it has
     // zero students enrolled
     return new ClassSession(
         newId,
-        theCourse,
-        theInstructor,
-        theClassroom,
+        theCourseId,
+        theInstructorId,
+        theClassroomId,
         newClassSectionNumber,
         theCapacity,
         0);
