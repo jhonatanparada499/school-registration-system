@@ -169,7 +169,7 @@ public class RegistrationService {
 
     // preconditions: 1. Student is not it the class, 2. the "section"
     // is not full, and the credits are below 18
-    if (theSection.getEnrolledStudents().contains(theStudent)) {
+    if (theSection.getEnrolledStudents().contains(theStudent.getId())) {
       System.out.println("The student is already in the class");
       return;
     }
@@ -179,8 +179,10 @@ public class RegistrationService {
       return;
     }
 
+    Course sectionCourse = CourseService.load().get(theSection.getCourse());
+    // Work in logic
     if (theStudent.getCurrentCredits() +
-        theSection.getCourse().getCredits() > 18) {
+        sectionCourse.getCredits() > 18) {
       System.out.println("Student and Course credits surpass 18");
       return;
     }
@@ -189,10 +191,7 @@ public class RegistrationService {
     // Work needs to be continued here
 
     theSection.addEnrolledStudent(theStudent);
-    // saveClassSection(theSection);
-    theStudent.addEnrolledClass(theSection);
-    // create a method called saveStudent()
-    // saveStudent(theStudent)
+    saveClassSection(theSection);
 
   }
 
