@@ -16,9 +16,6 @@ public class StudentRegistrator {
     Scanner keyboard = new Scanner(System.in);
     String studentIdChoice = keyboard.nextLine().trim();
 
-    Map<String, Student> students = StudentService.load();
-    Student student = students.get(studentIdChoice);
-
     // displays list of available class sections
     Map<Integer, ClassSession> classSections = ClassSessionService.load();
     System.out.println(
@@ -26,17 +23,20 @@ public class StudentRegistrator {
     for (ClassSession classSection : classSections.values()) {
       System.out.println(
           classSection.getId() +
-              " : " + classSection.getCourse().getName() +
-              " | " + classSection.getInstructor().getName() +
-              " | " + classSection.getClassroom().getRoomNumber() +
+              " : " + classSection.getCourse() +
+              " | " + classSection.getInstructor() +
+              " | " + classSection.getClassroom() +
               " | " + classSection.getSectionNumber());
     }
 
     System.out.print("Enter Class Section ID: ");
-    String classSectionChoice = keyboard.nextLine().trim();
+    String classSectionIdChoice = keyboard.nextLine().trim();
 
     ClassSession classSection = classSections.get(
-        Integer.parseInt(classSectionChoice));
+        Integer.parseInt(classSectionIdChoice));
+
+    Map<String, Student> students = StudentService.load();
+    Student student = students.get(studentIdChoice);
 
     RegistrationService.registerStudent(
         student,
