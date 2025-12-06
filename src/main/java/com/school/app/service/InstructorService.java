@@ -39,18 +39,18 @@ public class InstructorService {
         String[] columns = line.split(",");
 
         // If records columsn are missing and Exception will be thrown
-        String idField = columns[0];
-        String nameField = columns[1];
-        String qualifiedCoursesField = columns[2];
+        String idField = columns[0].trim();
+        String nameField = columns[1].trim();
+        String qualifiedCoursesIdField = columns[2].trim();
 
         // split field by the pipe character
-        String[] qualifiedCoursesArray = qualifiedCoursesField.split("\\|");
+        String[] qualifiedCoursesIdArray = qualifiedCoursesIdField.split("\\|");
 
-        List<String> qualifiedCourses = new ArrayList<>(
-            Arrays.asList(qualifiedCoursesArray));
+        List<String> qualifiedCoursesId = new ArrayList<>();
+        qualifiedCoursesId.addAll(Arrays.asList(qualifiedCoursesIdArray));
 
         Instructor instructor = new Instructor(
-            idField, nameField, qualifiedCourses);
+            idField, nameField, qualifiedCoursesId);
         instructors.put(idField, instructor);
       }
 
