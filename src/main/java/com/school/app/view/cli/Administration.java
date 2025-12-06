@@ -27,7 +27,6 @@ public class Administration {
       default:
         break;
     }
-    keyboard.close();
 
   }
 }
