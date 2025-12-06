@@ -31,8 +31,10 @@ package com.school.app;
 // launch(args);
 // }
 // }
+import com.school.app.view.cli.MainMenu;
+
 public class Main {
   public static void main(String[] args) {
-
+    MainMenu.display();
   }
 }
