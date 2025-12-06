@@ -29,6 +29,11 @@ public class RegistrationService {
   }
 
   public static List<Instructor> findEligibleInstructors(Course theCourse) {
+    if (theCourse == null) {
+      System.out.print("The course is null");
+      System.exit(0);
+    }
+
     List<Instructor> eligibleInstructors = new ArrayList<>();
 
     // load parsed Instructors.csv data
