@@ -20,30 +20,13 @@ public class Instructor {
   private String id;
   private String name;
   private List<String> qualifiedCourses; // contains courses ids
-  private List<String> teachingAssignment; // classes currently being taught
+  // private List<String> teachingAssignment; // classes currently being taught
 
   public Instructor(String theId, String theName,
       List<String> theQualifiedCourses) {
     id = theId;
     name = theName;
     qualifiedCourses = theQualifiedCourses;
-    teachingAssignment = new ArrayList<>();
-  }
-
-  public Instructor(String theId, String theName,
-      List<String> theQualifiedCourses,
-      List<String> theTeachingAssignment) {
-    id = theId;
-    name = theName;
-    qualifiedCourses = theQualifiedCourses;
-    teachingAssignment = theTeachingAssignment;
-  }
-
-  public Instructor(Instructor theInstructor) {
-    id = theInstructor.getId();
-    name = theInstructor.getName();
-    qualifiedCourses = theInstructor.getQualifiedCourses();
-    teachingAssignment = theInstructor.getTeachingAssignment();
   }
 
   public List<String> getQualifiedCourses() {
@@ -80,10 +63,6 @@ public class Instructor {
 
   public void setQualifiedCourses(List<String> qualifiedCourses) {
     this.qualifiedCourses = new ArrayList<>(qualifiedCourses);
-  }
-
-  public void setTeachingAssignment(List<String> teachingAssignment) {
-    this.teachingAssignment = new ArrayList<>(teachingAssignment);
   }
 
   public boolean canTeach(Course theCourse) {
