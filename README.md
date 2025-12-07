@@ -1,6 +1,20 @@
 # School Registration System
 A desktop administrative application for a college registrar.
 
+## Usage
+
+To run the CLI application, use this command:
+
+```bash
+bash compile-and-run.sh
+```
+
+To run the GUI application, install Apache Maven and use this command:
+
+```bash
+mvn clean javafx:run
+```
+
 ## Task Distribution Table  
 
 ### Models
