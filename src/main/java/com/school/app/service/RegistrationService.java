@@ -158,7 +158,6 @@ public class RegistrationService {
               theClassSection.getSectionNumber() + "," +
               theClassSection.getMaxCapacity() + "," +
               theClassSection.getEnrolledStudentsSeparatedByPipe() + " "); // must be a blank space
-      System.out.println("If this message is displayed, classesssion.csv was updated with new student");
     } catch (Exception e) {
       System.out.println("This execption message is from SaveClassScection");
       System.out.println(e);
@@ -168,6 +167,7 @@ public class RegistrationService {
   public static boolean registerStudent(Student theStudent,
       ClassSession theSection) {
 
+    // work needs to be done here
     // preconditions: 1. Student is not it the class, 2. the "section"
     // is not full, and the credits are below 18
     if (theSection.getEnrolledStudents().contains(theStudent.getId())) {
@@ -188,8 +188,6 @@ public class RegistrationService {
       return false;
     }
     //
-    //
-    // Work needs to be continued here
 
     theSection.addEnrolledStudent(theStudent);
     saveClassSection(theSection);
