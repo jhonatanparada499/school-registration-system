@@ -1,11 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.school.app.controller.AdministrationSceneController">
    <center>
-      <Label text="Administration" BorderPane.alignment="CENTER" />
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Create Class Section">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <TextField fx:id="TFCourseId" prefHeight="26.0" prefWidth="100.0" promptText="Course ID" />
+                        <TextField fx:id="TFInstructorId" prefHeight="26.0" prefWidth="100.0" promptText="Instructor Id" />
+                        <TextField fx:id="TFClassroomId" prefHeight="26.0" prefWidth="100.0" promptText="Classroom ID" />
+                        <TextField fx:id="TFCapacity" prefHeight="26.0" prefWidth="100.0" promptText="Capacity" />
+                        <Button fx:id="BCreate" mnemonicParsing="false" onAction="#createClassSection" prefHeight="26.0" prefWidth="84.0" text="Create" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="LClassSectionMessage" text="Result Message" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Register Student">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font></Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <TextField fx:id="TFStudentId" prefHeight="26.0" prefWidth="100.0" promptText="Student ID" />
+                        <TextField fx:id="TFClassSectionId" prefHeight="26.0" prefWidth="116.0" promptText="Class Section ID" />
+                        <Button fx:id="BRegister" mnemonicParsing="false" onAction="#registerStudent" prefHeight="26.0" prefWidth="84.0" text="Register" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="LStudentMessage" text="Result Message" />
+                     </children>
+                  </HBox>
+               </children></VBox>
+         </children>
+      </VBox>
    </center>
 </BorderPane>
