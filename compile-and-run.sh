@@ -11,7 +11,8 @@
 find ./src/main/ \
   -type f -name "*.java" \
   -not -name "Main.java" \
-  -not -name "module-info.java" >sources.txt
+  -not -name "module-info.java" \
+  -not -name "*Controller.java" >sources.txt
 
 javac -d ./output/ @sources.txt
 
