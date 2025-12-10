@@ -111,7 +111,7 @@ public class ClassSession {
   }
 
   public String getFormatSectionNumber() {
-    return String.format("%2d", this.sectionNumber);
+    return String.format("%03d", this.sectionNumber);
   }
 
   public String getEnrolledCapacity() {
