@@ -3,21 +3,25 @@ package com.school.app.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.util.Map;
 import com.school.app.model.Course;
 import com.school.app.model.Instructor;
 import com.school.app.model.Student;
-import com.school.app.service.ClassSessionService;
-import com.school.app.service.ClassroomService;
-import com.school.app.service.CourseService;
-import com.school.app.service.InstructorService;
-import com.school.app.service.RegistrationService;
-import com.school.app.service.StudentService;
+import com.school.app.service.*;
 import com.school.app.model.Classroom;
 import com.school.app.model.ClassSession;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+// import javafx.fxml.FXML;
+// import javafx.scene.control.ComboBox;
+
+import java.util.stream.Collectors;
+
+import javafx.scene.control.Alert;
 
 /**
  * Methods:
