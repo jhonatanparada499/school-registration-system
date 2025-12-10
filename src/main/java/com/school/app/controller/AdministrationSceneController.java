@@ -113,37 +113,50 @@ public class AdministrationSceneController {
   private void createClassSection(ActionEvent event) {
     Map<String, Course> courses = CourseService.load();
 
-    String courseId = TFCourseId.getText();
+    // in case user enters lowercase
+    String courseId = CBCourseId.getValue().trim().toUpperCase();
     if (courses.get(courseId) == null) {
-      LClassSectionMessage.setText("Invalid course ID.");
+      // LClassSectionMessage.setText("Invalid course ID.");
+      errorAlert.setContentText("Invalid course ID.");
+      errorAlert.showAndWait();
       return;
     }
 
     Map<String, Instructor> instructors = InstructorService.load();
 
-    String instructorId = TFInstructorId.getText();
+    String instructorId = CBInstructorId.getValue().trim().toUpperCase();
+
     if (instructors.get(instructorId) == null) {
-      LClassSectionMessage.setText("Invalid instructor ID.");
+      // LClassSectionMessage.setText("Invalid instructor ID.");
+      errorAlert.setContentText("Invalid instructor ID.");
+      errorAlert.showAndWait();
       return;
     }
 
     Map<String, Classroom> classrooms = ClassroomService.load();
 
-    String classroomId = TFClassroomId.getText();
+    String classroomId = CBClassroomId.getValue().trim().toUpperCase();
+
     if (classrooms.get(classroomId) == null) {
-      LClassSectionMessage.setText("Invalid classroom ID.");
+      // LClassSectionMessage.setText("Invalid classroom ID.");
+      errorAlert.setContentText("Invalid classroom ID.");
+      errorAlert.showAndWait();
       return;
     }
 
     int capacity = 0;
     try {
-      capacity = Integer.parseInt(TFCapacity.getText());
+      capacity = Integer.parseInt(TFCapacity.getText().trim());
       if (capacity < 0) {
-        LClassSectionMessage.setText("Capacity can not be negative.");
+        // LClassSectionMessage.setText("Capacity can not be negative.");
+        errorAlert.setContentText("Capacity cannot be negative.");
+        errorAlert.showAndWait();
         return;
       }
     } catch (Exception e) {
-      LClassSectionMessage.setText("Invalid capacity");
+      // LClassSectionMessage.setText("Invalid capacity");
+      errorAlert.setContentText("Invalid capacity");
+      errorAlert.showAndWait();
       return;
     }
 
@@ -157,15 +170,15 @@ public class AdministrationSceneController {
       RegistrationService.saveClassSection(newClassSection);
 
     } catch (Exception e) {
-      LClassSectionMessage.setText(e.getMessage());
+      // LClassSectionMessage.setText(e.getMessage());
+      errorAlert.setContentText(e.getMessage());
+      errorAlert.showAndWait();
       return;
     }
 
-    LClassSectionMessage.setText("Class Section was created successfully.");
-    TFCourseId.setText("");
-    TFInstructorId.setText("");
-    TFClassroomId.setText("");
-    TFCapacity.setText("");
+    // LClassSectionMessage.setText("Class Section was created successfully.");
+    infoAlert.setContentText("Class Section was created successfully.");
+    infoAlert.showAndWait();
   }
 
   @FXML
