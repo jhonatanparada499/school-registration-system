@@ -2,6 +2,10 @@ package com.school.app.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+// import com.school.app.service.CourseService;
+import com.school.app.service.InstructorService;
 
 /**
  * Methods:
@@ -98,6 +102,21 @@ public class ClassSession {
       result += studentId + "|";
     }
     return result;
+  }
+
+  public String getInstructorName() {
+    Map<String, Instructor> instructors = InstructorService.load();
+    Instructor instructor = instructors.get(this.instructor);
+    return instructor.getName();
+  }
+
+  public String getFormatSectionNumber() {
+    return String.format("%2d", this.sectionNumber);
+  }
+
+  public String getEnrolledCapacity() {
+    return String.format(
+        "%d / %d", this.enrolledIdStudents.size(), this.maxCapacity);
   }
 
   // Method not specifed in project instructions
