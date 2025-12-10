@@ -34,7 +34,6 @@
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- Optionally: parameterized tests support -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
@@ -57,7 +56,7 @@
       <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
-        <version>0.0.8</version> <!-- Use a recent version -->
+        <version>0.0.8</version>
         <configuration>
           <mainClass>com.school.app/com.school.app.Main</mainClass>
         </configuration>
