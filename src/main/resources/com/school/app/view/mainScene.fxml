@@ -9,5 +9,6 @@
   <tabs>
     <Tab fx:id="tabDashboard" closable="false" text="Dashboard" />
     <Tab fx:id="tabAdministration" closable="false" text="Administration" />
+    <Tab fx:id="tabStudent" closable="false" text="Students" />
   </tabs>
 </TabPane>
