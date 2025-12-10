@@ -47,21 +47,11 @@ public class AdministrationSceneController {
   @FXML
   private TextField TFCapacity;
 
-  //
-  // @FXML
-  // private TextField TFClassroomId;
-  //
-  // @FXML
-  // private TextField TFCourseId;
-  //
-  // @FXML
-  // private TextField TFInstructorId;
+  @FXML
+  private ComboBox<String> CBStudentId;
 
   @FXML
-  private TextField TFStudentId;
-
-  @FXML
-  private TextField TFClassSectionId;
+  private ComboBox<String> CBClassSectionId;
 
   @FXML
   private Button BRegister;
@@ -73,9 +63,11 @@ public class AdministrationSceneController {
 
   //
   private ObservableList<String> courseIds;
+  private ObservableList<String> studentIds;
   private ObservableList<String> classroomIds;
   private ObservableList<String> instructorIds;
   private ObservableList<String> elegibleInstructorIds;
+  private ObservableList<String> classSectionIds;
 
   //
   @FXML
@@ -83,6 +75,8 @@ public class AdministrationSceneController {
     CBCourseId.setVisibleRowCount(5);
     CBInstructorId.setVisibleRowCount(5);
     CBClassroomId.setVisibleRowCount(5);
+    CBStudentId.setVisibleRowCount(5);
+    CBClassSectionId.setVisibleRowCount(5);
 
     // load courses
     Map<String, Course> courses = CourseService.load();
@@ -90,22 +84,36 @@ public class AdministrationSceneController {
     courseIds = FXCollections.observableArrayList(
         courses.values().stream().map(Course::getCourseId).collect(Collectors.toList()));
 
-    Map<String, Classroom> classrooms = ClassroomService.load();
-
     // get classroom ids
+    Map<String, Classroom> classrooms = ClassroomService.load();
     classroomIds = FXCollections.observableArrayList(
         classrooms.values().stream().map(Classroom::getRoomNumber).collect(Collectors.toList()));
+
+    // load student ids
+    Map<String, Student> students = StudentService.load();
+    studentIds = FXCollections.observableArrayList(
+        students.values().stream().map(Student::getId).collect(Collectors.toList()));
 
     // get instructor ids
     Map<String, Instructor> instructors = InstructorService.load();
     instructorIds = FXCollections.observableArrayList(
         instructors.values().stream().map(Instructor::getId).collect(Collectors.toList()));
 
+    // init class sections
+    Map<Integer, ClassSession> classSections = ClassSessionService.load();
+    classSectionIds = FXCollections.observableArrayList(
+        classSections.values().stream().map(ClassSession::getStringId).collect(Collectors.toList()));
+
     // helper class for comboboxes courses ids and classroomcs
     FilterableComboBox CBCourse = new FilterableComboBox(CBCourseId, courseIds);
     FilterableComboBox CBInstructor = new FilterableComboBox(CBInstructorId, instructorIds);
-    new FilterableComboBox(CBClassroomId, classroomIds);
 
+    // helper class for student ids and classrooms
+    new FilterableComboBox(CBClassroomId, classroomIds);
+    new FilterableComboBox(CBStudentId, studentIds);
+    new FilterableComboBox(CBClassSectionId, classSectionIds);
+
+    // attach listener to when the combobox dropdown is displayed and hidden
     CBCourse.getComboBox().showingProperty().addListener((obs, wasShowing, isNowShowing) -> {
       if (wasShowing) {
 
@@ -155,7 +163,6 @@ public class AdministrationSceneController {
     errorAlert.setTitle(title);
   }
 
-  //
   @FXML
   private void createClassSection(ActionEvent event) {
     Map<String, Course> courses = CourseService.load();
@@ -163,7 +170,6 @@ public class AdministrationSceneController {
     // in case user enters lowercase
     String courseId = CBCourseId.getValue().trim().toUpperCase();
     if (courses.get(courseId) == null) {
-      // LClassSectionMessage.setText("Invalid course ID.");
       errorAlert.setContentText("Invalid course ID.");
       errorAlert.showAndWait();
       return;
@@ -174,7 +180,6 @@ public class AdministrationSceneController {
     String instructorId = CBInstructorId.getValue().trim().toUpperCase();
 
     if (instructors.get(instructorId) == null) {
-      // LClassSectionMessage.setText("Invalid instructor ID.");
       errorAlert.setContentText("Invalid instructor ID.");
       errorAlert.showAndWait();
       return;
@@ -185,7 +190,6 @@ public class AdministrationSceneController {
     String classroomId = CBClassroomId.getValue().trim().toUpperCase();
 
     if (classrooms.get(classroomId) == null) {
-      // LClassSectionMessage.setText("Invalid classroom ID.");
       errorAlert.setContentText("Invalid classroom ID.");
       errorAlert.showAndWait();
       return;
@@ -195,13 +199,11 @@ public class AdministrationSceneController {
     try {
       capacity = Integer.parseInt(TFCapacity.getText().trim());
       if (capacity < 0) {
-        // LClassSectionMessage.setText("Capacity can not be negative.");
         errorAlert.setContentText("Capacity cannot be negative.");
         errorAlert.showAndWait();
         return;
       }
     } catch (Exception e) {
-      // LClassSectionMessage.setText("Invalid capacity");
       errorAlert.setContentText("Invalid capacity");
       errorAlert.showAndWait();
       return;
@@ -213,17 +215,18 @@ public class AdministrationSceneController {
           instructorId,
           classroomId,
           capacity);
+
       // write new class sectio to csv file
       RegistrationService.saveClassSection(newClassSection);
+      // add new section id to class sections combobox
+      CBClassSectionId.getItems().add(newClassSection.getStringId());
 
     } catch (Exception e) {
-      // LClassSectionMessage.setText(e.getMessage());
       errorAlert.setContentText(e.getMessage());
       errorAlert.showAndWait();
       return;
     }
 
-    // LClassSectionMessage.setText("Class Section was created successfully.");
     infoAlert.setContentText("Class Section was created successfully.");
     infoAlert.showAndWait();
   }
@@ -232,10 +235,9 @@ public class AdministrationSceneController {
   void registerStudent(ActionEvent event) {
     Map<String, Student> students = StudentService.load();
 
-    String studentId = TFStudentId.getText().trim();
+    String studentId = CBStudentId.getValue().trim();
 
     if (students.get(studentId) == null) {
-      // LStudentMessage.setText("Invalid studetn Id.");
       errorAlert.setContentText("The Student ID must be an integer.");
       errorAlert.showAndWait();
       return;
@@ -243,15 +245,13 @@ public class AdministrationSceneController {
 
     Map<Integer, ClassSession> classSections = ClassSessionService.load();
     try {
-      int classSectionId = Integer.parseInt(TFClassSectionId.getText().trim());
+      int classSectionId = Integer.parseInt(CBClassSectionId.getValue().trim());
       if (classSections.get(classSectionId) == null) {
-        // LStudentMessage.setText("Invalid section Id.");
         errorAlert.setContentText("The Class section ID was not found.");
         errorAlert.showAndWait();
         return;
       }
 
-      // logical execption to register student
       RegistrationService newRegistration = new RegistrationService();
       try {
         newRegistration.registerStudent(students.get(studentId),
@@ -264,19 +264,13 @@ public class AdministrationSceneController {
       }
 
     } catch (Exception e) {
-      // LStudentMessage.setText("The ID must be an integer.");
       errorAlert.setContentText("The class section ID must be an integer.");
       errorAlert.showAndWait();
       return;
     }
 
-    // LStudentMessage.setText("Student was registered successfully.");
-    // TFStudentId.setText("");
-    // TFClassSectionId.setText("");
     infoAlert.setContentText("Student was registered successfully.");
     infoAlert.showAndWait();
   }
-  //
 
-  //
 }
