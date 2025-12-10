@@ -185,37 +185,51 @@ public class AdministrationSceneController {
   void registerStudent(ActionEvent event) {
     Map<String, Student> students = StudentService.load();
 
-    String studentId = TFStudentId.getText();
+    String studentId = TFStudentId.getText().trim();
+
     if (students.get(studentId) == null) {
-      LStudentMessage.setText("Invalid studetn Id.");
+      // LStudentMessage.setText("Invalid studetn Id.");
+      errorAlert.setContentText("The Student ID must be an integer.");
+      errorAlert.showAndWait();
       return;
     }
 
     Map<Integer, ClassSession> classSections = ClassSessionService.load();
     try {
-      int classSectionId = Integer.parseInt(TFClassSectionId.getText());
+      int classSectionId = Integer.parseInt(TFClassSectionId.getText().trim());
       if (classSections.get(classSectionId) == null) {
-        LStudentMessage.setText("Invalid section Id.");
+        // LStudentMessage.setText("Invalid section Id.");
+        errorAlert.setContentText("The Class section ID was not found.");
+        errorAlert.showAndWait();
         return;
       }
 
       // logical execption to register student
+      RegistrationService newRegistration = new RegistrationService();
       try {
-        RegistrationService.registerStudent(students.get(studentId),
+        newRegistration.registerStudent(students.get(studentId),
             classSections.get(classSectionId));
       } catch (Exception e) {
-        LStudentMessage.setText(e.getMessage());
+        // LStudentMessage.setText(e.getMessage());
+        errorAlert.setContentText(e.getMessage());
+        errorAlert.showAndWait();
         return;
       }
 
     } catch (Exception e) {
-      LStudentMessage.setText("The ID must be an integer.");
+      // LStudentMessage.setText("The ID must be an integer.");
+      errorAlert.setContentText("The class section ID must be an integer.");
+      errorAlert.showAndWait();
       return;
     }
 
-    LStudentMessage.setText("Student was registered successfully.");
-    TFStudentId.setText("");
-    TFClassSectionId.setText("");
+    // LStudentMessage.setText("Student was registered successfully.");
+    // TFStudentId.setText("");
+    // TFClassSectionId.setText("");
+    infoAlert.setContentText("Student was registered successfully.");
+    infoAlert.showAndWait();
   }
+  //
+
   //
 }
