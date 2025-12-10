@@ -1,5 +1,7 @@
 package com.school.app.controller;
 
+import java.util.List;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -73,10 +75,15 @@ public class AdministrationSceneController {
   private ObservableList<String> courseIds;
   private ObservableList<String> classroomIds;
   private ObservableList<String> instructorIds;
+  private ObservableList<String> elegibleInstructorIds;
 
   //
   @FXML
   public void initialize() {
+    CBCourseId.setVisibleRowCount(5);
+    CBInstructorId.setVisibleRowCount(5);
+    CBClassroomId.setVisibleRowCount(5);
+
     // load courses
     Map<String, Course> courses = CourseService.load();
     // courseids gets the course ids Strings as an List<String>
@@ -95,9 +102,49 @@ public class AdministrationSceneController {
         instructors.values().stream().map(Instructor::getId).collect(Collectors.toList()));
 
     // helper class for comboboxes courses ids and classroomcs
-    new FilterableComboBox(CBCourseId, courseIds);
-    new FilterableComboBox(CBInstructorId, instructorIds);
+    FilterableComboBox CBCourse = new FilterableComboBox(CBCourseId, courseIds);
+    FilterableComboBox CBInstructor = new FilterableComboBox(CBInstructorId, instructorIds);
     new FilterableComboBox(CBClassroomId, classroomIds);
+
+    CBCourse.getComboBox().showingProperty().addListener((obs, wasShowing, isNowShowing) -> {
+      if (wasShowing) {
+
+        // precondition
+        if (CBCourseId.getValue() == null) {
+          return;
+        }
+
+        // filter to get instructor that can teach course
+        String courseId = CBCourseId.getValue().trim().toUpperCase();
+
+        // preconditions for courseId value in comboboxe
+        if (courseId.trim().isEmpty()) {
+          return;
+        }
+
+        Course course = courses.get(courseId);
+
+        // precondition for course object
+        if (course == null) {
+          return;
+        }
+
+        List<Instructor> elegibleInstructors = RegistrationService.findEligibleInstructors(
+            course);
+
+        // precondition for elegibleInstructors
+        if (elegibleInstructors == null || elegibleInstructors.isEmpty()) {
+          return;
+        }
+
+        elegibleInstructorIds = FXCollections.observableArrayList(
+            elegibleInstructors.stream().map(Instructor::getId).collect(Collectors.toList()));
+
+        CBInstructorId.getEditor().clear();
+
+        CBInstructor.setFilteredItems(elegibleInstructorIds);
+      }
+    });
 
     // initialize alert windows
     String title = "School Registration System";
