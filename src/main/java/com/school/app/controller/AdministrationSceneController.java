@@ -34,31 +34,45 @@ public class AdministrationSceneController {
   private Button BCreate;
 
   @FXML
-  private Button BRegister;
+  private ComboBox<String> CBCourseId;
 
   @FXML
-  private Label LClassSectionMessage;
+  private ComboBox<String> CBInstructorId;
 
   @FXML
-  private Label LStudentMessage;
+  private ComboBox<String> CBClassroomId;
 
   @FXML
   private TextField TFCapacity;
+
+  //
+  // @FXML
+  // private TextField TFClassroomId;
+  //
+  // @FXML
+  // private TextField TFCourseId;
+  //
+  // @FXML
+  // private TextField TFInstructorId;
+
+  @FXML
+  private TextField TFStudentId;
 
   @FXML
   private TextField TFClassSectionId;
 
   @FXML
-  private TextField TFClassroomId;
+  private Button BRegister;
 
-  @FXML
-  private TextField TFCourseId;
+  //
+  private Alert infoAlert;
 
-  @FXML
-  private TextField TFInstructorId;
+  private Alert errorAlert;
 
-  @FXML
-  private TextField TFStudentId;
+  //
+  private ObservableList<String> courseIds;
+  private ObservableList<String> classroomIds;
+  private ObservableList<String> instructorIds;
 
   //
   @FXML
