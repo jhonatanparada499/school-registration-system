@@ -147,6 +147,7 @@ Another important modification we made was deciding to use String and primitive 
 
 The last and most important modification was to use the JavaFX graphics library rather than Swing. The reason of this was because of JavaFX's modern-looking UI and its compatibility with FXML files. In this way, creating interfaces can be made quickly using for example Scene Builder. Along JavaFX and FXML, we saw natural to do a model-view-controller architecture and hence, the controller directory.
 
-## Architecture Diagram
-Pending by Isaias...
+## Architecture Diagram  
+
+![UML](images/UMLDiagram.drawio.png)
 
