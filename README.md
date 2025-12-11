@@ -102,7 +102,7 @@ school-registration-system
 | ------------- | -------------- | -------------- |
 | Define setters for Student.java | Camille | Completed |
 | Define setters for Instructor.java | Isaias | Completed |
-| Define setters for Course.java | Isaias | In Progress |
+| Define setters for Course.java | Isaias | Completed |
 
 ### Controllers
 | Task | Assigned To | Status |
@@ -110,6 +110,7 @@ school-registration-system
 | MainSceneController.java | Jhonatan | Completed |
 | AdministrationSceneController.java | Jhonatan | Completed |
 | DashboardSceneController.java | Jhonatan | Completed |
+| StudentSceneController.java | Jhonatan | Completed |
 
 
 ### CLI View
@@ -127,13 +128,18 @@ school-registration-system
 | administrationScene.fxml | Jhonatan | Completed |
 | dashboardScene.fxml | Jhonatan | Completed |
 | studentScene.fxml | Jhonatan | Completed |
+| mainScene.fxml | Jhonatan | Completed |
 
 ## Project Tweaks & Modifications
 
-In the description of Project1.pdf it is not specified to create the ClassSession.csv file present in this repository. However, the ClassSession.java and ClassSessionService.java files are. So, I thought it would be natural to include a ClassSession.csv file just like the other CSV files have their corresponding service and model counterparts. This helped us to make the application more modular.
-
+In the description of Project1.pdf it is not specified to create the ClassSession.csv file present in this repository. However, the ClassSession.java and ClassSessionService.java files are. So, I thought it would be natural to include a ClassSession.csv file just like the other CSV files have their corresponding service and model counterparts. This helped us to make the application more modular.  
+  
+![ClassSessionCSV Sample](images/classSessionCSVSample.png)
+  
 Another important modification we made was deciding to use String and primitive data types for the model classes. For example, Project1.pdf says that ClassSession.java must have the field "course" of type Course, but we declare the field as a String type. In it, we stored the Course ID as a String rather than a Course object. The reason of this is that putting models in models causes an Stack Overflow due to how our service classes load and parse the data that go into the models. For example, to get the enrolled students metric in ClassSessionService.java, we must invoke the StudentService.java file to get the Student instances. But, in StudentService.java, we need the enrolled classes list of type ClassSession, so we must invoke ClassSessionService.java. This generates a loop, so that is why we decided to use Strings, because we can store the information and retrieve the associated objects from the maps later in the models or controllers using the stored IDs.
 
-The last and most important modification was to use the JavaFX graphics library rather than Swing. The reason of this was because of JavaFX's modern-looking UI and its compatibility with FXML files. In this way, creating interfaces can be made quickly using for example Scene Builder. Along JavaFX and FXML, we saw natural to do a model-view-controller architecture.
+The last and most important modification was to use the JavaFX graphics library rather than Swing. The reason of this was because of JavaFX's modern-looking UI and its compatibility with FXML files. In this way, creating interfaces can be made quickly using for example Scene Builder. Along JavaFX and FXML, we saw natural to do a model-view-controller architecture and hence, the controller directory.
 
+## Architecture Diagram
+Pending by Isaias...
 
