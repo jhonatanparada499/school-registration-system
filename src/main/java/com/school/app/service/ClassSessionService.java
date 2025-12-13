@@ -88,4 +88,15 @@ public class ClassSessionService {
 
     return classSections;
   }
+
+  public static List<String> getIds(
+      Map<Integer, ClassSession> theClassSections) {
+
+    List<String> ids = new ArrayList<>();
+
+    for (ClassSession classSection : theClassSections.values()) {
+      ids.add(String.valueOf(classSection.getId()));
+    }
+    return ids;
+  }
 }

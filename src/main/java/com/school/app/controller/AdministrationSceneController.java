@@ -14,8 +14,6 @@ import com.school.app.service.RegistrationService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.stream.Collectors;
-
 import javafx.scene.control.Alert;
 
 import org.controlsfx.control.SearchableComboBox;
@@ -47,12 +45,12 @@ public class AdministrationSceneController {
   private Alert infoAlert,
       errorAlert;
 
-  private ObservableList<String> courseIds,
-      studentIds,
-      classroomIds,
-      instructorIds,
-      elegibleInstructorIds,
-      classSectionIds;
+  private ObservableList<String> courseChoices,
+      studentChoices,
+      classroomChoices,
+      instructorChoices,
+      elegibleInstructorChoices,
+      classSectionChoices;
 
   private Map<Integer, ClassSession> classSections;
   private Map<String, Course> courses;
@@ -60,7 +58,7 @@ public class AdministrationSceneController {
   private Map<String, Student> students;
   private Map<String, Instructor> instructors;
 
-  RegistrationService registrationService;
+  private RegistrationService registrationService;
 
   public AdministrationSceneController(
       Map<Integer, ClassSession> theClassSections,
@@ -77,33 +75,22 @@ public class AdministrationSceneController {
     instructors = theInstructors;
     registrationService = theRegistrationService;
 
-    // get class section ids
-    classSectionIds = getClassSectionIds(classSections);
-
-    // get course ids
-    courseIds = FXCollections.observableArrayList(
-        courses.values().stream().map(Course::getCourseId).collect(Collectors.toList()));
-
-    // get classroom ids
-    classroomIds = FXCollections.observableArrayList(
-        classrooms.values().stream().map(Classroom::getRoomNumber).collect(Collectors.toList()));
-
-    // get student ids
-    studentIds = FXCollections.observableArrayList(
-        students.values().stream().map(Student::getId).collect(Collectors.toList()));
-
-    // get instructor ids
-    instructorIds = FXCollections.observableArrayList(
-        instructors.values().stream().map(Instructor::getId).collect(Collectors.toList()));
+    // the choices can be customized, in this case the only show the ids of the
+    // options
+    classSectionChoices = getClassSectionChoices(classSections);
+    courseChoices = getCourseChoices(courses);
+    classroomChoices = getClassroomChoices(classrooms);
+    studentChoices = getStudentChoices(students);
+    instructorChoices = getInstructorChoices(instructors);
   }
 
   @FXML
   public void initialize() {
-    SCBCourseId.getItems().addAll(courseIds);
-    SCBInstructorId.getItems().addAll(instructorIds);
-    SCBClassroomId.getItems().addAll(classroomIds);
-    SCBStudentId.getItems().addAll(studentIds);
-    SCBClassSectionId.getItems().addAll(classSectionIds);
+    SCBCourseId.getItems().addAll(courseChoices);
+    SCBInstructorId.getItems().addAll(instructorChoices);
+    SCBClassroomId.getItems().addAll(classroomChoices);
+    SCBStudentId.getItems().addAll(studentChoices);
+    SCBClassSectionId.getItems().addAll(classSectionChoices);
 
     // attach listener to when the combobox dropdown is displayed and hidden
     SCBCourseId.showingProperty().addListener((obs, wasShowing, isShowing) -> {
@@ -118,12 +105,13 @@ public class AdministrationSceneController {
         return;
       }
 
+      // gets elebible instructor depending on selected course id
       List<Instructor> elegibleInstructors = registrationService.findEligibleInstructors(course);
-      elegibleInstructorIds = getElegibleInstructorIds(
+      elegibleInstructorChoices = getElegibleInstructorChoices(
           elegibleInstructors);
 
       // update Instructor Combobox wiht new instructor ids
-      SCBInstructorId.getItems().setAll(elegibleInstructorIds);
+      SCBInstructorId.getItems().setAll(elegibleInstructorChoices);
 
     });
 
@@ -139,8 +127,19 @@ public class AdministrationSceneController {
   @FXML
   private void createClassSection(ActionEvent event) {
     String courseId = SCBCourseId.getValue();
+    if (courseId == null) {
+      return;
+    }
+
     String instructorId = SCBInstructorId.getValue();
+    if (instructorId == null) {
+      return;
+    }
+
     String classroomId = SCBClassroomId.getValue();
+    if (classroomId == null) {
+      return;
+    }
 
     int capacity = 0;
     try {
@@ -172,7 +171,7 @@ public class AdministrationSceneController {
 
       // update items in class sections combobox
       SCBClassSectionId.getItems().setAll(
-          getClassSectionIds(classSections));
+          getClassSectionChoices(classSections));
 
     } catch (Exception e) {
       errorAlert.setContentText(e.getMessage());
@@ -205,17 +204,65 @@ public class AdministrationSceneController {
     infoAlert.showAndWait();
   }
 
-  private ObservableList<String> getClassSectionIds(
+  // fast permormance under 100 items
+  private ObservableList<String> getClassSectionChoices(
       Map<Integer, ClassSession> theClassSections) {
 
-    return theClassSections.values().stream().map(ClassSession::getStringId)
-        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (ClassSession classSection : theClassSections.values()) {
+      ids.add(String.valueOf(classSection.getId()));
+    }
+    return ids;
   }
 
-  private ObservableList<String> getElegibleInstructorIds(
+  private ObservableList<String> getElegibleInstructorChoices(
       List<Instructor> theElegibleInstructors) {
 
-    return theElegibleInstructors.stream().map(Instructor::getId)
-        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (Instructor instructor : theElegibleInstructors) {
+      ids.add(instructor.getId());
+    }
+    return ids;
   }
+
+  private ObservableList<String> getCourseChoices(
+      Map<String, Course> theCourses) {
+
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (Course course : theCourses.values()) {
+      ids.add(course.getCourseId());
+    }
+    return ids;
+  }
+
+  private ObservableList<String> getClassroomChoices(
+      Map<String, Classroom> theClassrooms) {
+
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (Classroom classroom : theClassrooms.values()) {
+      ids.add(classroom.getRoomNumber());
+    }
+    return ids;
+  }
+
+  private ObservableList<String> getStudentChoices(
+      Map<String, Student> theStudents) {
+
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (Student student : theStudents.values()) {
+      ids.add(student.getId());
+    }
+    return ids;
+  }
+
+  private ObservableList<String> getInstructorChoices(
+      Map<String, Instructor> theInstructors) {
+
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (Instructor instructor : theInstructors.values()) {
+      ids.add(instructor.getId());
+    }
+    return ids;
+  }
+
 }
