@@ -76,4 +76,8 @@ public class Student {
     this.enrolledClasses = theEnrolledClasses;
   }
 
+  public void removeEnrolledClass(ClassSession theClassSection) {
+    this.enrolledClasses.remove(theClassSection);
+  }
+
 }

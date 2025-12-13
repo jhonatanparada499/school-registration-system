@@ -152,7 +152,7 @@ public class RegistrationService {
     // preconditions: 1. Student is not it the class, 2. the "section"
     // is not full, and the credits are below 18
     if (theSection.getEnrolledStudents().contains(theStudent)) {
-      throw new SchoolException("Error: The student is already in the class.");
+      throw new SchoolException("The student is already in the class.");
     }
     if (theSection.isFull()) {
       // Could throw an exception
@@ -169,6 +169,15 @@ public class RegistrationService {
 
     theSection.addEnrolledStudent(theStudent);
     theStudent.addEnrolledClass(theSection);
+  }
+
+  public void dropStudent(Student theStudent,
+      ClassSession theClassSection) throws SchoolException {
+    if (!theStudent.getEnrolledClasses().contains(theClassSection)) {
+      throw new SchoolException("The Student is not enrolled in this class.");
+    }
+    theStudent.removeEnrolledClass(theClassSection);
+    theClassSection.removeEnrolledStudent(theStudent);
   }
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.util.Map;
@@ -39,6 +40,8 @@ public class AdministrationSceneController {
   private SearchableComboBox<String> SCBStudentId;
   @FXML
   private SearchableComboBox<String> SCBClassSectionId;
+  @FXML
+  private ComboBox<String> CBStudentAction;
   @FXML
   private Button BRegister;
 
@@ -86,11 +89,26 @@ public class AdministrationSceneController {
 
   @FXML
   public void initialize() {
+    // add choices to create class section section
     SCBCourseId.getItems().addAll(courseChoices);
     SCBInstructorId.getItems().addAll(instructorChoices);
     SCBClassroomId.getItems().addAll(classroomChoices);
+
+    // disable create button unless choices have been selected
+    BCreate.disableProperty().bind(SCBCourseId.valueProperty().isNull()
+        .or(SCBInstructorId.valueProperty().isNull())
+        .or(SCBClassroomId.valueProperty().isNull()));
+
+    // add choices to register student section
     SCBStudentId.getItems().addAll(studentChoices);
     SCBClassSectionId.getItems().addAll(classSectionChoices);
+    CBStudentAction.getItems().addAll("Enroll", "Drop");
+
+    // disable register button unless choices have been selected
+    BRegister.disableProperty().bind(SCBStudentId.valueProperty().isNull()
+        .or(SCBClassSectionId.valueProperty().isNull())
+        .or(SCBClassSectionId.valueProperty().isNull())
+        .or(CBStudentAction.valueProperty().isNull()));
 
     // attach listener to when the combobox dropdown is displayed and hidden
     SCBCourseId.showingProperty().addListener((obs, wasShowing, isShowing) -> {
@@ -127,19 +145,8 @@ public class AdministrationSceneController {
   @FXML
   private void createClassSection(ActionEvent event) {
     String courseId = SCBCourseId.getValue();
-    if (courseId == null) {
-      return;
-    }
-
     String instructorId = SCBInstructorId.getValue();
-    if (instructorId == null) {
-      return;
-    }
-
     String classroomId = SCBClassroomId.getValue();
-    if (classroomId == null) {
-      return;
-    }
 
     int capacity = 0;
     try {
@@ -187,12 +194,38 @@ public class AdministrationSceneController {
   void registerStudent(ActionEvent event) {
     String studentId = SCBStudentId.getValue();
     int classSectionId = Integer.parseInt(SCBClassSectionId.getValue());
+    String studentAction = CBStudentAction.getValue();
 
+    Student student = students.get(studentId);
+    ClassSession classSection = classSections.get(classSectionId);
+
+    if (studentAction.equals("Drop")) {
+      try {
+        registrationService.dropStudent(
+            student, classSection);
+
+        infoAlert.setContentText("The student has been dropped from class section: " +
+            classSection.getId());
+        infoAlert.showAndWait();
+        return;
+
+      } catch (Exception e) {
+        errorAlert.setContentText(e.getMessage());
+        errorAlert.showAndWait();
+        return;
+      }
+    }
+
+    // if action is enroll
     try {
       // registerStudent adds the student in the class section
       registrationService.registerStudent(
-          students.get(studentId),
-          classSections.get(classSectionId));
+          student,
+          classSection);
+
+      infoAlert.setContentText("Student was registered successfully.");
+      infoAlert.showAndWait();
+      return;
 
     } catch (Exception e) {
       errorAlert.setContentText(e.getMessage());
@@ -200,8 +233,6 @@ public class AdministrationSceneController {
       return;
     }
 
-    infoAlert.setContentText("Student was registered successfully.");
-    infoAlert.showAndWait();
   }
 
   // fast permormance under 100 items

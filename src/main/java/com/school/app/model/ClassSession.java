@@ -116,6 +116,10 @@ public class ClassSession {
     this.enrolledStudents.add(theStudent);
   }
 
+  public void removeEnrolledStudent(Student theStudent) {
+    this.enrolledStudents.remove(theStudent);
+  }
+
   public boolean isFull() {
     return getEnrolledStudents().size() >= getMaxCapacity();
   }
