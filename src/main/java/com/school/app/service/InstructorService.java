@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.List;
 
-import com.school.app.model.ClassSession;
 import com.school.app.model.Instructor;
+import com.school.app.model.Course;
 // import com.school.app.service.ClassSessionService;
 
 // Inspiration: 
@@ -23,7 +23,8 @@ public class InstructorService {
    * HashMap<String, Instructor> object.
    */
   public static Map<String, Instructor> load(
-      Map<Integer, ClassSession> classSections) {
+      Map<String, Course> theCourses) {
+
     Map<String, Instructor> instructors = new HashMap<>();
 
     // Relative path to Instructor.csv (expects data/Instructor.csv at project root)
@@ -52,19 +53,15 @@ public class InstructorService {
         List<String> qualifiedCoursesId = new ArrayList<>();
         qualifiedCoursesId.addAll(Arrays.asList(qualifiedCoursesIdArray));
 
-        // only ocassion that a loader uses the loaded data of a loader
-        List<Integer> teachingAssignmetIds = new ArrayList<>();
-        for (ClassSession classSection : classSections.values()) {
-          if (classSection.getInstructor().equals(idField)) {
-            teachingAssignmetIds.add(classSection.getId());
-          }
+        List<Course> qualifiedCourses = new ArrayList<>();
+        for (String qualifiedCourseId : qualifiedCoursesId) {
+          qualifiedCourses.add(theCourses.get(qualifiedCourseId));
         }
 
         Instructor instructor = new Instructor(
             idField,
             nameField,
-            qualifiedCoursesId,
-            teachingAssignmetIds);
+            qualifiedCourses);
 
         instructors.put(idField, instructor);
       }

@@ -55,16 +55,16 @@ public class DashboardSceneController {
         new PropertyValueFactory<>("id"));
 
     courseIdCol.setCellValueFactory(
-        new PropertyValueFactory<>("course"));
+        new PropertyValueFactory<>("courseId"));
 
     sectionNumberCol.setCellValueFactory(
         new PropertyValueFactory<>("formatSectionNumber"));
 
     instructorCol.setCellValueFactory(
-        new PropertyValueFactory<>("instructor"));
+        new PropertyValueFactory<>("instructorName"));
 
     roomIdCol.setCellValueFactory(
-        new PropertyValueFactory<>("classroom"));
+        new PropertyValueFactory<>("classroomNumber"));
 
     enrolledCapacityCol.setCellValueFactory(
         new PropertyValueFactory<>("enrolledCapacity"));
@@ -91,5 +91,13 @@ public class DashboardSceneController {
   @FXML
   void saveClassSections(ActionEvent event) {
     registrationService.writeToClassSections();
+
+    LLastUpdated.setText(
+        LocalDateTime.now().format(
+            DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm:ss a")));
+
+    // add logic to only save if class sections changed
+    // since last save action, need to initialize as well
+    // lastSavedClassSections = new Class
   }
 }

@@ -23,19 +23,19 @@ public class RegistrationService {
 
   private Map<Integer, ClassSession> classSections;
   private Map<String, Course> courses;
-  // private Map<String, Classroom> classrooms;
+  private Map<String, Classroom> classrooms;
   // private Map<String, Student> students;
   private Map<String, Instructor> instructors;
 
   public RegistrationService(
       Map<Integer, ClassSession> theClassSections,
       Map<String, Course> theCourses,
-      // Map<String, Classroom> theClassrooms,
+      Map<String, Classroom> theClassrooms,
       // Map<String, Student> theStudents,
       Map<String, Instructor> theInstructors) {
     classSections = theClassSections;
     courses = theCourses;
-    // classrooms = theClassrooms;
+    classrooms = theClassrooms;
     // students = theStudents;
     instructors = theInstructors;
   }
@@ -72,18 +72,17 @@ public class RegistrationService {
       String theClassroomId,
       int theCapacity) throws SchoolException {
 
-    Instructor theInstructor = instructors.get(theInstructorId);
-    Course theCourse = courses.get(theCourseId);
+    Instructor instructor = instructors.get(theInstructorId);
+    Course course = courses.get(theCourseId);
+    Classroom classroom = classrooms.get(theClassroomId);
 
-    if (!theInstructor.canTeach(theCourse)) {
+    if (!instructor.canTeach(course)) {
       throw new SchoolException("Instructor cannot teach that course.");
     }
 
-    if (theInstructor.getCurrentLoad(
-        classSections,
-        courses) +
-        theCourse.getCredits() > 9) {
-      String message = theInstructor.getName() +
+    if (instructor.getCurrentLoad() +
+        course.getCredits() > 9) {
+      String message = instructor.getName() +
           " has reached the maximum teaching load.";
       throw new SchoolException(message);
     }
@@ -101,7 +100,7 @@ public class RegistrationService {
     // if so, increment the section number
     List<ClassSession> duplicatedclassSections = new ArrayList<>();
     for (ClassSession classSection : classSections.values()) {
-      if (classSection.getCourse().equals(theCourse.getCourseId())) {
+      if (classSection.getCourse().getCourseId().equals(course.getCourseId())) {
         duplicatedclassSections.add(classSection);
       }
     }
@@ -112,11 +111,12 @@ public class RegistrationService {
 
     // When creating a new class section, it makes sense that it has
     // zero students enrolled
+
     return new ClassSession(
         newId,
-        theCourseId,
-        theInstructorId,
-        theClassroomId,
+        course,
+        instructor,
+        classroom,
         newClassSectionNumber,
         theCapacity);
   }
@@ -131,9 +131,9 @@ public class RegistrationService {
       for (ClassSession classSection : classSections.values()) {
         writer.write(
             classSection.getId() + "," +
-                classSection.getCourse() + "," +
-                classSection.getInstructor() + "," +
-                classSection.getClassroom() + "," +
+                classSection.getCourse().getCourseId() + "," +
+                classSection.getInstructor().getId() + "," +
+                classSection.getClassroom().getRoomNumber() + "," +
                 classSection.getSectionNumber() + "," +
                 classSection.getMaxCapacity() + "," +
                 classSection.getEnrolledStudentsSeparatedByPipe() + " ");
@@ -151,7 +151,7 @@ public class RegistrationService {
     // work needs to be done here
     // preconditions: 1. Student is not it the class, 2. the "section"
     // is not full, and the credits are below 18
-    if (theSection.getEnrolledStudents().contains(theStudent.getId())) {
+    if (theSection.getEnrolledStudents().contains(theStudent)) {
       throw new SchoolException("Error: The student is already in the class.");
     }
     if (theSection.isFull()) {
@@ -159,18 +159,16 @@ public class RegistrationService {
       throw new SchoolException("The class session is full");
     }
 
-    Course sectionCourse = courses.get(theSection.getCourse());
+    Course sectionCourse = theSection.getCourse();
 
-    if (theStudent.getCurrentCredits(
-        classSections,
-        courses) +
+    if (theStudent.getCurrentCredits() +
         sectionCourse.getCredits() > 18) {
       throw new SchoolException(
           "Registration would exceed maximum semester credits (18).");
     }
 
-    // adds the student id to enrolled students of class section
     theSection.addEnrolledStudent(theStudent);
+    theStudent.addEnrolledClass(theSection);
   }
 
 }

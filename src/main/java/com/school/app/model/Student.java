@@ -3,8 +3,6 @@ package com.school.app.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.Map;
-
 /**
  * Methods:
  * 1. int getCurrentCredits
@@ -19,49 +17,34 @@ public class Student {
   private String id;
   private String name;
   private String major;
+  private List<ClassSession> enrolledClasses;
 
   public Student(String theId, String theName,
       String theMajor) {
     id = theId;
     name = theName;
     major = theMajor;
+    enrolledClasses = new ArrayList<>();
   }
 
   // calculates current credits based on classSessions.csv
-  public int getCurrentCredits(
-      Map<Integer, ClassSession> theClassSections,
-      Map<String, Course> theCourses) {
-
+  public int getCurrentCredits() {
     int totalCredits = 0;
-    Map<String, Course> courses = theCourses;
-
-    List<String> enrolledClassesId = this.getEnrolledClasses(
-        theClassSections);
-    for (String enrolledClassId : enrolledClassesId) {
-      if (courses.keySet().contains(enrolledClassId)) {
-        Course course = courses.get(enrolledClassId);
-        totalCredits += course.getCredits();
-      }
+    for (ClassSession classSection : this.enrolledClasses) {
+      Course course = classSection.getCourse();
+      totalCredits += course.getCredits();
     }
     return totalCredits;
   }
 
   // Determines the enrolled Classes for student based on the
   // classsession.cvs file
-  public List<String> getEnrolledClasses(
-      Map<Integer, ClassSession> theClassSections) {
+  public List<ClassSession> getEnrolledClasses() {
+    return this.enrolledClasses;
+  }
 
-    List<String> enrolledClasses = new ArrayList<>();
-
-    for (ClassSession classSection : theClassSections.values()) {
-      List<String> enrolledStudents = classSection.getEnrolledStudents();
-      for (String studentId : enrolledStudents) {
-        if (studentId.equals(this.getId())) {
-          enrolledClasses.add(classSection.getCourse());
-        }
-      }
-    }
-    return new ArrayList<>(enrolledClasses);
+  public void addEnrolledClass(ClassSession theClassSection) {
+    this.enrolledClasses.add(theClassSection);
   }
 
   public String getId() {
@@ -86,6 +69,11 @@ public class Student {
 
   public void setMajor(String major) {
     this.major = major;
+  }
+
+  public void setEnrolledClasses(
+      List<ClassSession> theEnrolledClasses) {
+    this.enrolledClasses = theEnrolledClasses;
   }
 
 }

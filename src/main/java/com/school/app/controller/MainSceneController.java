@@ -41,12 +41,17 @@ public class MainSceneController {
   private RegistrationService registrationService;
 
   public MainSceneController() {
-    classSections = ClassSessionService.load();
 
-    classrooms = ClassroomService.load();
     students = StudentService.load();
+    classrooms = ClassroomService.load();
     courses = CourseService.load();
-    instructors = InstructorService.load(classSections);
+    instructors = InstructorService.load(courses);
+
+    classSections = ClassSessionService.load(
+        courses,
+        students,
+        instructors,
+        classrooms);
 
     viewPath = "/com/school/app/view/";
     adminstrationScene = viewPath + "administrationScene.fxml";
@@ -56,7 +61,7 @@ public class MainSceneController {
     registrationService = new RegistrationService(
         classSections,
         courses,
-        // classrooms,
+        classrooms,
         // students,
         instructors);
   }

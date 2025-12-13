@@ -3,7 +3,6 @@ package com.school.app.model;
 import java.util.List;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Methods:
@@ -16,21 +15,21 @@ import java.util.Map;
 public class Instructor {
   private String id;
   private String name;
-  private List<String> qualifiedCourses; // contains courses ids
-  private List<Integer> teachingAssignments; // classes currently being taught
+  private List<Course> qualifiedCourses; // contains courses ids
+  private List<ClassSession> teachingAssignments; // classes currently being taught
 
-  public Instructor(String theId, String theName,
-      List<String> theQualifiedCourses,
-      List<Integer> theTeachingAssignments) {
+  public Instructor(String theId,
+      String theName,
+      List<Course> theQualifiedCourses) {
     id = theId;
     name = theName;
     qualifiedCourses = theQualifiedCourses;
-    teachingAssignments = theTeachingAssignments;
+    teachingAssignments = new ArrayList<>();
   }
 
-  public List<String> getQualifiedCourses() {
-    return new ArrayList<String>(this.qualifiedCourses);
-  }
+  // public List<String> getQualifiedCourses() {
+  // return new ArrayList<Course>(this.qualifiedCourses);
+  // }
 
   public String getId() {
     return this.id;
@@ -40,13 +39,13 @@ public class Instructor {
     return this.name;
   }
 
-  public List<Integer> getTeachingAssignments() {
+  public List<ClassSession> getTeachingAssignments() {
     return this.teachingAssignments;
   }
 
   // it should be add teaching section
   public void addTeachingAssignment(ClassSession theClassSession) {
-    this.teachingAssignments.add(theClassSession.getId());
+    this.teachingAssignments.add(theClassSession);
   }
 
   public void setId(String id) {
@@ -57,23 +56,18 @@ public class Instructor {
     this.name = name;
   }
 
-  public void setQualifiedCourses(List<String> qualifiedCourses) {
-    this.qualifiedCourses = new ArrayList<>(qualifiedCourses);
+  public void setQualifiedCourses(List<Course> theQualifiedCourses) {
+    this.qualifiedCourses = theQualifiedCourses;
   }
 
   public boolean canTeach(Course theCourse) {
-    String theCourseId = theCourse.getCourseId();
-    return this.qualifiedCourses.contains(theCourseId);
+    return this.qualifiedCourses.contains(theCourse);
   }
 
-  public int getCurrentLoad(
-      Map<Integer, ClassSession> theClassSections,
-      Map<String, Course> theCourses) {
-
+  public int getCurrentLoad() {
     int currentLoad = 0;
-    for (Integer classSectionId : this.teachingAssignments) {
-      ClassSession classSection = theClassSections.get(classSectionId);
-      Course course = theCourses.get(classSection.getCourse());
+    for (ClassSession classSection : this.teachingAssignments) {
+      Course course = classSection.getCourse();
       currentLoad += course.getCredits();
     }
     return currentLoad;

@@ -11,19 +11,19 @@ import java.util.List;
 
 public class ClassSession {
   private int id;
-  private String course;
-  private String instructor;
-  private String classroom;
+  private Course course;
+  private Instructor instructor;
+  private Classroom classroom;
   private int sectionNumber;
   private int maxCapacity;
-  private List<String> enrolledIdStudents;
+  private List<Student> enrolledStudents;
 
   // constructor to create a new class section
   public ClassSession(
       int theId,
-      String theCourse,
-      String theInstructor,
-      String theClassroom,
+      Course theCourse,
+      Instructor theInstructor,
+      Classroom theClassroom,
       int theSectionNumber,
       int theMaxCapacity) {
     id = theId;
@@ -32,25 +32,7 @@ public class ClassSession {
     classroom = theClassroom;
     sectionNumber = theSectionNumber;
     maxCapacity = theMaxCapacity;
-    enrolledIdStudents = new ArrayList<>();
-  }
-
-  // constructor used to compile existing records
-  public ClassSession(
-      int theId,
-      String theCourse,
-      String theInstructor,
-      String theClassroom,
-      int theSectionNumber,
-      int theMaxCapacity,
-      List<String> theEnrolledStudents) {
-    id = theId;
-    course = theCourse;
-    instructor = theInstructor;
-    classroom = theClassroom;
-    sectionNumber = theSectionNumber;
-    maxCapacity = theMaxCapacity;
-    enrolledIdStudents = theEnrolledStudents;
+    enrolledStudents = new ArrayList<>();
   }
 
   public int getId() {
@@ -61,17 +43,33 @@ public class ClassSession {
     return String.valueOf(this.id);
   }
 
-  public String getCourse() {
+  public Course getCourse() {
     return this.course;
   }
 
+  public String getCourseName() {
+    return getCourse().getName();
+  }
+
+  public String getCourseId() {
+    return getCourse().getCourseId();
+  }
+
   // Fix privacy leak in the rest of getter methods
-  public String getInstructor() {
+  public Instructor getInstructor() {
     return this.instructor;
   }
 
-  public String getClassroom() {
-    return classroom;
+  public String getInstructorName() {
+    return getInstructor().getName();
+  }
+
+  public Classroom getClassroom() {
+    return this.classroom;
+  }
+
+  public String getClassroomNumber() {
+    return getClassroom().getRoomNumber();
   }
 
   public int getMaxCapacity() {
@@ -92,34 +90,34 @@ public class ClassSession {
 
   // Method not specified in project instructions
   // This method is similar to the one in Student.java
-  public List<String> getEnrolledStudents() {
-    return new ArrayList<>(enrolledIdStudents);
+  public List<Student> getEnrolledStudents() {
+    return this.enrolledStudents;
   }
 
   public String getEnrolledStudentsSeparatedByPipe() {
     String result = "";
-    for (String studentId : enrolledIdStudents) {
-      result += studentId + "|";
+    for (Student student : this.enrolledStudents) {
+      result += student.getId() + "|";
     }
     return result;
   }
 
   public String getFormatSectionNumber() {
-    return String.format("%03d", this.sectionNumber);
+    return String.format("%03d", getSectionNumber());
   }
 
   public String getEnrolledCapacity() {
     return String.format(
-        "%d / %d", this.enrolledIdStudents.size(), this.maxCapacity);
+        "%d / %d", getEnrolledStudents().size(), getMaxCapacity());
   }
 
   // Method not specifed in project instructions
   public void addEnrolledStudent(Student theStudent) {
-    this.enrolledIdStudents.add(theStudent.getId());
+    this.enrolledStudents.add(theStudent);
   }
 
   public boolean isFull() {
-    return this.enrolledIdStudents.size() >= this.maxCapacity;
+    return getEnrolledStudents().size() >= getMaxCapacity();
   }
 
 }

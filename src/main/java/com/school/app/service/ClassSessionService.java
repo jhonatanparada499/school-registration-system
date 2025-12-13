@@ -1,6 +1,5 @@
 package com.school.app.service;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.File;
 import java.util.ArrayList;
@@ -10,17 +9,24 @@ import java.util.Map;
 import java.util.Scanner;
 
 import com.school.app.model.ClassSession;
+import com.school.app.model.Student;
+import com.school.app.model.Instructor;
+import com.school.app.model.Course;
+import com.school.app.model.Classroom;
 
 import java.util.List;
 
 public class ClassSessionService {
-  public static Map<Integer, ClassSession> load() {
-    Map<Integer, ClassSession> classSections = new HashMap<>();
+  public static final String filePath = String.valueOf(
+      Paths.get("data", "ClassSession.csv"));
 
-    // Relative path to ClassSession.csv (expects data/ClassSession.csv at project
-    // root)
-    Path path = Paths.get("data", "ClassSession.csv");
-    String filePath = String.valueOf(path);
+  public static Map<Integer, ClassSession> load(
+      Map<String, Course> theCourses,
+      Map<String, Student> theStudents,
+      Map<String, Instructor> theInstructors,
+      Map<String, Classroom> theClassrooms) {
+
+    Map<Integer, ClassSession> classSections = new HashMap<>();
 
     // try-resource closes file automatically
     try (Scanner scanner = new Scanner(new File(filePath))) {
@@ -31,9 +37,6 @@ public class ClassSessionService {
           continue;
         }
 
-        // if a field is empty it must have a blank space
-        // it has to do with how split works
-        // make sure csv is , , and not ,,
         String[] columns = line.split(",");
 
         int idField = Integer.parseInt(columns[0]);
@@ -45,21 +48,33 @@ public class ClassSessionService {
         String enrolledStudentIdsField = columns[6].trim();
 
         String[] array = enrolledStudentIdsField.split("\\|");
-        List<String> enrolledStudentsIds = new ArrayList<>();
 
+        List<String> enrolledStudentsIds = new ArrayList<>();
         if (!enrolledStudentIdsField.trim().isEmpty()) {
           // cannot be = to Arrayaslist for add method later
           enrolledStudentsIds.addAll(Arrays.asList(array));
         }
 
+        Course course = theCourses.get(courseIdField);
+        Instructor instructor = theInstructors.get(instructorIdField);
+        Classroom classroom = theClassrooms.get(classroomIdField);
+
         ClassSession classSection = new ClassSession(
             idField,
-            courseIdField,
-            instructorIdField,
-            classroomIdField,
+            course,
+            instructor,
+            classroom,
             sectionNumberField,
-            maxCapacityField,
-            enrolledStudentsIds);
+            maxCapacityField);
+
+        // add student object to enrolled student in class section
+        for (String studentId : enrolledStudentsIds) {
+          Student student = theStudents.get(studentId);
+          classSection.addEnrolledStudent(student);
+        }
+
+        // add the class section to the taeching assignment
+        instructor.addTeachingAssignment(classSection);
 
         classSections.put(
             idField,
