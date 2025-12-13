@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.List;
 
+import com.school.app.model.ClassSession;
 import com.school.app.model.Instructor;
+// import com.school.app.service.ClassSessionService;
 
 // Inspiration: 
 // https://medium.com/@AlexanderObregon/javas-scanner-usedelimiter-method-explained-8e09e2baf831
@@ -20,7 +22,8 @@ public class InstructorService {
    * This static method parses Instructor.cvs and returns a
    * HashMap<String, Instructor> object.
    */
-  public static Map<String, Instructor> load() {
+  public static Map<String, Instructor> load(
+      Map<Integer, ClassSession> classSections) {
     Map<String, Instructor> instructors = new HashMap<>();
 
     // Relative path to Instructor.csv (expects data/Instructor.csv at project root)
@@ -49,8 +52,20 @@ public class InstructorService {
         List<String> qualifiedCoursesId = new ArrayList<>();
         qualifiedCoursesId.addAll(Arrays.asList(qualifiedCoursesIdArray));
 
+        // only ocassion that a loader uses the loaded data of a loader
+        List<Integer> teachingAssignmetIds = new ArrayList<>();
+        for (ClassSession classSection : classSections.values()) {
+          if (classSection.getInstructor().equals(idField)) {
+            teachingAssignmetIds.add(classSection.getId());
+          }
+        }
+
         Instructor instructor = new Instructor(
-            idField, nameField, qualifiedCoursesId);
+            idField,
+            nameField,
+            qualifiedCoursesId,
+            teachingAssignmetIds);
+
         instructors.put(idField, instructor);
       }
 

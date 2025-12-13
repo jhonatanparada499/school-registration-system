@@ -18,8 +18,6 @@ import com.school.app.model.ClassSession;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-// import javafx.fxml.FXML;
-// import javafx.scene.control.ComboBox;
 
 import java.util.stream.Collectors;
 
@@ -34,36 +32,29 @@ import javafx.scene.control.Alert;
 public class AdministrationSceneController {
   @FXML
   private Button BCreate;
-
   @FXML
   private ComboBox<String> CBCourseId;
-
   @FXML
   private ComboBox<String> CBInstructorId;
-
   @FXML
   private ComboBox<String> CBClassroomId;
-
   @FXML
   private TextField TFCapacity;
-
   @FXML
   private ComboBox<String> CBStudentId;
-
   @FXML
   private ComboBox<String> CBClassSectionId;
-
-  FilterableComboBox CBClassSection;
-
   @FXML
   private Button BRegister;
 
-  //
-  private Alert infoAlert;
+  // custom class
+  FilterableComboBox CBClassSection;
+  FilterableComboBox CBCourse;
+  FilterableComboBox CBInstructor;
 
+  private Alert infoAlert;
   private Alert errorAlert;
 
-  //
   private ObservableList<String> courseIds;
   private ObservableList<String> studentIds;
   private ObservableList<String> classroomIds;
@@ -71,7 +62,50 @@ public class AdministrationSceneController {
   private ObservableList<String> elegibleInstructorIds;
   private ObservableList<String> classSectionIds;
 
-  //
+  private Map<Integer, ClassSession> classSections;
+  private Map<String, Course> courses;
+  private Map<String, Classroom> classrooms;
+  private Map<String, Student> students;
+  private Map<String, Instructor> instructors;
+
+  RegistrationService registrationService;
+
+  public AdministrationSceneController(
+      Map<Integer, ClassSession> theClassSections,
+      Map<String, Course> theCourses,
+      Map<String, Classroom> theClassrooms,
+      Map<String, Student> theStudents,
+      Map<String, Instructor> theInstructors,
+
+      RegistrationService theRegistrationService) {
+
+    classSections = theClassSections;
+    courses = theCourses;
+    classrooms = theClassrooms;
+    students = theStudents;
+    instructors = theInstructors;
+
+    registrationService = theRegistrationService;
+    // get class section ids
+    classSectionIds = getClassSectionIds(classSections);
+
+    // get course ids
+    courseIds = FXCollections.observableArrayList(
+        courses.values().stream().map(Course::getCourseId).collect(Collectors.toList()));
+
+    // get classroom ids
+    classroomIds = FXCollections.observableArrayList(
+        classrooms.values().stream().map(Classroom::getRoomNumber).collect(Collectors.toList()));
+
+    // get student ids
+    studentIds = FXCollections.observableArrayList(
+        students.values().stream().map(Student::getId).collect(Collectors.toList()));
+
+    // get instructor ids
+    instructorIds = FXCollections.observableArrayList(
+        instructors.values().stream().map(Instructor::getId).collect(Collectors.toList()));
+  }
+
   @FXML
   public void initialize() {
     CBCourseId.setVisibleRowCount(5);
@@ -80,40 +114,17 @@ public class AdministrationSceneController {
     CBStudentId.setVisibleRowCount(5);
     CBClassSectionId.setVisibleRowCount(5);
 
-    // load courses
-    Map<String, Course> courses = CourseService.load();
-    // courseids gets the course ids Strings as an List<String>
-    courseIds = FXCollections.observableArrayList(
-        courses.values().stream().map(Course::getCourseId).collect(Collectors.toList()));
+    // CBCourse and CBInstructor are dynamic and related with each other, that is
+    // why I need to Id them
+    CBCourse = new FilterableComboBox(CBCourseId, courseIds);
+    CBInstructor = new FilterableComboBox(CBInstructorId, instructorIds);
+    // CBClassSection items must be updated when new class section is created
+    CBClassSection = new FilterableComboBox(CBClassSectionId, classSectionIds);
 
-    // get classroom ids
-    Map<String, Classroom> classrooms = ClassroomService.load();
-    classroomIds = FXCollections.observableArrayList(
-        classrooms.values().stream().map(Classroom::getRoomNumber).collect(Collectors.toList()));
-
-    // load student ids
-    Map<String, Student> students = StudentService.load();
-    studentIds = FXCollections.observableArrayList(
-        students.values().stream().map(Student::getId).collect(Collectors.toList()));
-
-    // get instructor ids
-    Map<String, Instructor> instructors = InstructorService.load();
-    instructorIds = FXCollections.observableArrayList(
-        instructors.values().stream().map(Instructor::getId).collect(Collectors.toList()));
-
-    // init class sections
-    Map<Integer, ClassSession> classSections = ClassSessionService.load();
-    classSectionIds = FXCollections.observableArrayList(
-        classSections.values().stream().map(ClassSession::getStringId).collect(Collectors.toList()));
-
-    // helper class for comboboxes courses ids and classroomcs
-    FilterableComboBox CBCourse = new FilterableComboBox(CBCourseId, courseIds);
-    FilterableComboBox CBInstructor = new FilterableComboBox(CBInstructorId, instructorIds);
-
-    // helper class for student ids and classrooms
+    // CBClassroomId and CBStudentId are static and independent, that is way I don't
+    // id them
     new FilterableComboBox(CBClassroomId, classroomIds);
     new FilterableComboBox(CBStudentId, studentIds);
-    CBClassSection = new FilterableComboBox(CBClassSectionId, classSectionIds);
 
     // attach listener to when the combobox dropdown is displayed and hidden
     CBCourse.getComboBox().showingProperty().addListener((obs, wasShowing, isNowShowing) -> {
@@ -139,19 +150,18 @@ public class AdministrationSceneController {
           return;
         }
 
-        List<Instructor> elegibleInstructors = RegistrationService.findEligibleInstructors(
+        List<Instructor> elegibleInstructors = registrationService.findEligibleInstructors(
             course);
 
         // precondition for elegibleInstructors
         if (elegibleInstructors == null || elegibleInstructors.isEmpty()) {
           return;
         }
+        elegibleInstructorIds = getElegibleInstructorIds(
+            elegibleInstructors);
+        // CBInstructorId.getEditor().clear();
 
-        elegibleInstructorIds = FXCollections.observableArrayList(
-            elegibleInstructors.stream().map(Instructor::getId).collect(Collectors.toList()));
-
-        CBInstructorId.getEditor().clear();
-
+        // update Instructor Combobox wiht new instructor ids
         CBInstructor.setFilteredItems(elegibleInstructorIds);
       }
     });
@@ -167,8 +177,6 @@ public class AdministrationSceneController {
 
   @FXML
   private void createClassSection(ActionEvent event) {
-    Map<String, Course> courses = CourseService.load();
-
     // in case user enters lowercase
     String courseId = CBCourseId.getValue().trim().toUpperCase();
     if (courses.get(courseId) == null) {
@@ -177,8 +185,6 @@ public class AdministrationSceneController {
       return;
     }
 
-    Map<String, Instructor> instructors = InstructorService.load();
-
     String instructorId = CBInstructorId.getValue().trim().toUpperCase();
 
     if (instructors.get(instructorId) == null) {
@@ -186,8 +192,6 @@ public class AdministrationSceneController {
       errorAlert.showAndWait();
       return;
     }
-
-    Map<String, Classroom> classrooms = ClassroomService.load();
 
     String classroomId = CBClassroomId.getValue().trim().toUpperCase();
 
@@ -211,17 +215,24 @@ public class AdministrationSceneController {
       return;
     }
 
-    RegistrationService newRegistration = new RegistrationService();
     try {
-      ClassSession newClassSection = newRegistration.createClassSection(courseId,
+      ClassSession newClassSection = registrationService.createClassSection(
+          courseId,
           instructorId,
           classroomId,
           capacity);
 
+      instructors.get(instructorId).addTeachingAssignment(newClassSection);
+      // classSections points to the global classesctions Map
+      classSections.put(
+          newClassSection.getId(), newClassSection);
+
+      // no need to clean items here, FilterableComboBox does it
+      CBClassSection.setFilteredItems(
+          getClassSectionIds(classSections));
+
       // write new class sectio to csv file
-      RegistrationService.saveClassSection(newClassSection);
-      // add new section id to class sections combobox
-      CBClassSection.getComboBox().getItems().add(newClassSection.getStringId());
+      // RegistrationService.saveClassSection(newClassSection);
 
     } catch (Exception e) {
       errorAlert.setContentText(e.getMessage());
@@ -235,8 +246,6 @@ public class AdministrationSceneController {
 
   @FXML
   void registerStudent(ActionEvent event) {
-    Map<String, Student> students = StudentService.load();
-
     String studentId = CBStudentId.getValue().trim();
 
     if (students.get(studentId) == null) {
@@ -245,7 +254,6 @@ public class AdministrationSceneController {
       return;
     }
 
-    Map<Integer, ClassSession> classSections = ClassSessionService.load();
     try {
       int classSectionId = Integer.parseInt(CBClassSectionId.getValue().trim());
       if (classSections.get(classSectionId) == null) {
@@ -254,10 +262,12 @@ public class AdministrationSceneController {
         return;
       }
 
-      RegistrationService newRegistration = new RegistrationService();
       try {
-        newRegistration.registerStudent(students.get(studentId),
+        // registerStudent adds the student in the class section
+        registrationService.registerStudent(
+            students.get(studentId),
             classSections.get(classSectionId));
+
       } catch (Exception e) {
         // LStudentMessage.setText(e.getMessage());
         errorAlert.setContentText(e.getMessage());
@@ -275,4 +285,17 @@ public class AdministrationSceneController {
     infoAlert.showAndWait();
   }
 
+  private ObservableList<String> getClassSectionIds(
+      Map<Integer, ClassSession> theClassSections) {
+
+    return FXCollections.observableArrayList(
+        theClassSections.values().stream().map(ClassSession::getStringId).collect(Collectors.toList()));
+  }
+
+  private ObservableList<String> getElegibleInstructorIds(
+      List<Instructor> theElegibleInstructors) {
+    return FXCollections.observableArrayList(
+        theElegibleInstructors.stream().map(Instructor::getId).collect(Collectors.toList()));
+
+  }
 }

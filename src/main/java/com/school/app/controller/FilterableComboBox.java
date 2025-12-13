@@ -68,8 +68,7 @@ public class FilterableComboBox {
   }
 
   public void setFilteredItems(ObservableList<String> filteredItems) {
-    this.originalList.clear();
-    this.originalList.addAll(filteredItems);
+    this.originalList.setAll(filteredItems);
   }
 
 }

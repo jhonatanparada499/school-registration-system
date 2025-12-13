@@ -21,6 +21,25 @@ import java.nio.file.Paths;
 
 public class RegistrationService {
 
+  private Map<Integer, ClassSession> classSections;
+  private Map<String, Course> courses;
+  // private Map<String, Classroom> classrooms;
+  // private Map<String, Student> students;
+  private Map<String, Instructor> instructors;
+
+  public RegistrationService(
+      Map<Integer, ClassSession> theClassSections,
+      Map<String, Course> theCourses,
+      // Map<String, Classroom> theClassrooms,
+      // Map<String, Student> theStudents,
+      Map<String, Instructor> theInstructors) {
+    classSections = theClassSections;
+    courses = theCourses;
+    // classrooms = theClassrooms;
+    // students = theStudents;
+    instructors = theInstructors;
+  }
+
   // SchoolException used by createClassSession
   class SchoolException extends Exception {
     public SchoolException(String theMessage) {
@@ -28,16 +47,15 @@ public class RegistrationService {
     }
   }
 
-  public static List<Instructor> findEligibleInstructors(Course theCourse) {
+  public List<Instructor> findEligibleInstructors(
+      Course theCourse) {
+
     if (theCourse == null) {
       System.out.print("The course is null");
       return null;
     }
 
     List<Instructor> eligibleInstructors = new ArrayList<>();
-
-    // load parsed Instructors.csv data
-    Map<String, Instructor> instructors = InstructorService.load();
 
     for (Instructor instructor : instructors.values()) {
       if (instructor.canTeach(theCourse)) {
@@ -54,23 +72,21 @@ public class RegistrationService {
       String theClassroomId,
       int theCapacity) throws SchoolException {
 
-    Instructor theInstructor = InstructorService.load().get(theInstructorId);
-    Course theCourse = CourseService.load().get(theCourseId);
-    // Classroom theClassroom = ClassroomService.load().get(theClassroomId);
+    Instructor theInstructor = instructors.get(theInstructorId);
+    Course theCourse = courses.get(theCourseId);
 
     if (!theInstructor.canTeach(theCourse)) {
       throw new SchoolException("Instructor cannot teach that course.");
     }
 
-    if (theInstructor.getCurrentLoad() +
+    if (theInstructor.getCurrentLoad(
+        classSections,
+        courses) +
         theCourse.getCredits() > 9) {
-      String message = "Error: " + theInstructor.getName() +
+      String message = theInstructor.getName() +
           " has reached the maximum teaching load.";
       throw new SchoolException(message);
     }
-
-    // get Classesctions from ClassSection.csv.
-    Map<Integer, ClassSession> classSections = ClassSessionService.load();
 
     // Get the class section with greatest id value and Calculate new id
     int greatestClassSectionId = 0;
@@ -105,62 +121,26 @@ public class RegistrationService {
         theCapacity);
   }
 
-  public static void saveClassSection(ClassSession theClassSection) {
+  public void writeToClassSections() {
     Path path = Paths.get("data", "ClassSession.csv");
     String filePath = String.valueOf(path);
     File classSectionRecords = new File(filePath);
-    // have to convert the id to String because of CSVReader
-    int otherClassSectionId = theClassSection.getId();
 
-    // read records
-    Map<Integer, ClassSession> allRecords = ClassSessionService.load();
-
-    // filter duplicate records based on the first column (Id)
-    // filteredRecords return unique records
-    List<ClassSession> filteredRecords = new ArrayList<>();
-    for (ClassSession classSection : allRecords.values()) {
-      if (classSection.getId() != otherClassSectionId) {
-        filteredRecords.add(classSection);
-      }
-    }
-
-    // the filteredRecords will help determenie whether there is duplicates
-    // Rewrite whole file without the duplicate record (it will be updated below)
     // false for overwrite
-    if (filteredRecords.size() < allRecords.size()) {
-      try (FileWriter writer = new FileWriter(classSectionRecords, false)) {
-        for (ClassSession classSection : filteredRecords) {
-          writer.write(
-              classSection.getId() + "," +
-                  classSection.getCourse() + "," +
-                  classSection.getInstructor() + "," +
-                  classSection.getClassroom() + "," +
-                  classSection.getSectionNumber() + "," +
-                  classSection.getMaxCapacity() + "," +
-                  classSection.getEnrolledStudentsSeparatedByPipe() + " ");
-          writer.write(System.lineSeparator());
-        }
-      } catch (Exception e) {
-        System.out.println("Error from first try statement in saveClassSection");
-        System.out.println(e);
-      }
-    }
-
-    try (FileWriter writer = new FileWriter(classSectionRecords, true)) {
-      if (classSectionRecords.length() > 0) {
+    try (FileWriter writer = new FileWriter(classSectionRecords, false)) {
+      for (ClassSession classSection : classSections.values()) {
+        writer.write(
+            classSection.getId() + "," +
+                classSection.getCourse() + "," +
+                classSection.getInstructor() + "," +
+                classSection.getClassroom() + "," +
+                classSection.getSectionNumber() + "," +
+                classSection.getMaxCapacity() + "," +
+                classSection.getEnrolledStudentsSeparatedByPipe() + " ");
         writer.write(System.lineSeparator());
       }
-
-      writer.write(
-          theClassSection.getId() + "," +
-              theClassSection.getCourse() + "," +
-              theClassSection.getInstructor() + "," +
-              theClassSection.getClassroom() + "," +
-              theClassSection.getSectionNumber() + "," +
-              theClassSection.getMaxCapacity() + "," +
-              theClassSection.getEnrolledStudentsSeparatedByPipe() + " "); // must be a blank space
     } catch (Exception e) {
-      System.out.println("This execption message is from SaveClassScection");
+      System.out.println("Error from first try statement in saveClassSection");
       System.out.println(e);
     }
   }
@@ -179,17 +159,18 @@ public class RegistrationService {
       throw new SchoolException("The class session is full");
     }
 
-    Course sectionCourse = CourseService.load().get(theSection.getCourse());
-    // Work in logic
-    if (theStudent.getCurrentCredits() +
+    Course sectionCourse = courses.get(theSection.getCourse());
+
+    if (theStudent.getCurrentCredits(
+        classSections,
+        courses) +
         sectionCourse.getCredits() > 18) {
       throw new SchoolException(
-          "Error: Registration would exceed maximum semester credits (18).");
+          "Registration would exceed maximum semester credits (18).");
     }
-    //
 
+    // adds the student id to enrolled students of class section
     theSection.addEnrolledStudent(theStudent);
-    saveClassSection(theSection);
   }
 
 }

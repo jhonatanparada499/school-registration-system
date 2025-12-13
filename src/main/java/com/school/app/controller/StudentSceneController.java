@@ -9,7 +9,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.util.Map;
 
 import com.school.app.model.Student;
-import com.school.app.service.StudentService;
 
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
@@ -23,39 +22,33 @@ import java.util.ArrayList;
 // inspiration: https://code.makery.ch/blog/javafx-2-tableview-filter/
 
 public class StudentSceneController {
-  private Map<String, Student> students;
-
-  // @FXML
-  // private Button BFilter;
-
   @FXML
   private TextField TFFilterSearchBar;
-
   @FXML
   private TableColumn<Student, String> studentIdCol;
-
   @FXML
   private TableColumn<Student, String> studentMajorCol;
-
   @FXML
   private TableColumn<Student, String> studentNameCol;
-
   @FXML
   private TableView<Student> studentsTable;
 
-  //
-  private ObservableList<Student> masterData = FXCollections.observableArrayList();
-  private ObservableList<Student> filteredData = FXCollections.observableArrayList();
+  private ObservableList<Student> masterData;
+  private ObservableList<Student> filteredData;
+  private Map<String, Student> students;
 
-  public StudentSceneController() {
-    students = StudentService.load();
+  public StudentSceneController(Map<String, Student> theStudents) {
+    masterData = FXCollections.observableArrayList();
+    filteredData = FXCollections.observableArrayList();
+    students = theStudents;
 
-    // Add some sample data to the master data
+    // Add student objects
     masterData.addAll(students.values());
 
     // Initially add all data to filtered data
     filteredData.addAll(masterData);
 
+    // add listener to update table entries
     masterData.addListener(new ListChangeListener<Student>() {
       @Override
       public void onChanged(ListChangeListener.Change<? extends Student> change) {
@@ -76,7 +69,6 @@ public class StudentSceneController {
     studentMajorCol.setCellValueFactory(
         new PropertyValueFactory<Student, String>("major"));
 
-    // studentsTable.get
     // Add filtered data to the table
     studentsTable.setItems(filteredData);
 
@@ -98,9 +90,9 @@ public class StudentSceneController {
   private void updateFilteredData() {
     filteredData.clear();
 
-    for (Student p : masterData) {
-      if (matchesFilter(p)) {
-        filteredData.add(p);
+    for (Student student : masterData) {
+      if (matchesFilter(student)) {
+        filteredData.add(student);
       }
     }
 
@@ -115,7 +107,7 @@ public class StudentSceneController {
    * @param student
    * @return
    */
-  private boolean matchesFilter(Student student) {
+  private boolean matchesFilter(Student theStudent) {
     String filterString = TFFilterSearchBar.getText();
     if (filterString == null || filterString.isEmpty()) {
       // No filter --> Add all.
@@ -124,11 +116,11 @@ public class StudentSceneController {
 
     String lowerCaseFilterString = filterString.toLowerCase();
 
-    if (student.getId().toLowerCase().contains(lowerCaseFilterString)) {
+    if (theStudent.getId().toLowerCase().contains(lowerCaseFilterString)) {
       return true;
-    } else if (student.getName().toLowerCase().contains(lowerCaseFilterString)) {
+    } else if (theStudent.getName().toLowerCase().contains(lowerCaseFilterString)) {
       return true;
-    } else if (student.getMajor().toLowerCase().contains(lowerCaseFilterString)) {
+    } else if (theStudent.getMajor().toLowerCase().contains(lowerCaseFilterString)) {
       return true;
     }
 

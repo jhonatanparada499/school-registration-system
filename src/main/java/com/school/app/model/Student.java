@@ -3,8 +3,6 @@ package com.school.app.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.school.app.service.ClassSessionService;
-import com.school.app.service.CourseService;
 import java.util.Map;
 
 /**
@@ -30,11 +28,15 @@ public class Student {
   }
 
   // calculates current credits based on classSessions.csv
-  public int getCurrentCredits() {
-    List<String> enrolledClassesId = this.getEnrolledClasses();
-    Map<String, Course> courses = CourseService.load();
+  public int getCurrentCredits(
+      Map<Integer, ClassSession> theClassSections,
+      Map<String, Course> theCourses) {
 
     int totalCredits = 0;
+    Map<String, Course> courses = theCourses;
+
+    List<String> enrolledClassesId = this.getEnrolledClasses(
+        theClassSections);
     for (String enrolledClassId : enrolledClassesId) {
       if (courses.keySet().contains(enrolledClassId)) {
         Course course = courses.get(enrolledClassId);
@@ -46,12 +48,12 @@ public class Student {
 
   // Determines the enrolled Classes for student based on the
   // classsession.cvs file
-  public List<String> getEnrolledClasses() {
+  public List<String> getEnrolledClasses(
+      Map<Integer, ClassSession> theClassSections) {
+
     List<String> enrolledClasses = new ArrayList<>();
 
-    Map<Integer, ClassSession> classSections = ClassSessionService.load();
-
-    for (ClassSession classSection : classSections.values()) {
+    for (ClassSession classSection : theClassSections.values()) {
       List<String> enrolledStudents = classSection.getEnrolledStudents();
       for (String studentId : enrolledStudents) {
         if (studentId.equals(this.getId())) {
