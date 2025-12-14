@@ -63,6 +63,8 @@ public class AdministrationSceneController {
 
   private RegistrationService registrationService;
 
+  private List<Instructor> elegibleInstructors;
+
   public AdministrationSceneController(
       Map<Integer, ClassSession> theClassSections,
       Map<String, Course> theCourses,
@@ -124,7 +126,7 @@ public class AdministrationSceneController {
       }
 
       // gets elebible instructor depending on selected course id
-      List<Instructor> elegibleInstructors = registrationService.findEligibleInstructors(course);
+      elegibleInstructors = registrationService.findEligibleInstructors(course);
       elegibleInstructorChoices = getElegibleInstructorChoices(
           elegibleInstructors);
 
