@@ -22,7 +22,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <TableView fx:id="classSectionsTable" maxHeight="250.0" prefHeight="250.0" prefWidth="550.0">
+            <TableView fx:id="classSectionsTable" maxWidth="900.0" prefHeight="250.0" prefWidth="550.0">
                <columns>
                   <TableColumn fx:id="idCol" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="ID" />
                   <TableColumn fx:id="courseIdCol" prefWidth="100.0" text="Course ID" />

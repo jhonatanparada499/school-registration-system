@@ -103,9 +103,6 @@ public class StudentSceneController {
   /**
    * Returns true if the student matches the current filter. Lower/Upper case
    * is ignored.
-   * 
-   * @param student
-   * @return
    */
   private boolean matchesFilter(Student theStudent) {
     String filterString = TFFilterSearchBar.getText();

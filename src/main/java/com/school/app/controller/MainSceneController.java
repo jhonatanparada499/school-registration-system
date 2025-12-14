@@ -33,10 +33,10 @@ public class MainSceneController {
   Map<String, Course> courses;
   Map<Integer, ClassSession> classSections;
 
-  String viewPath;
-  String adminstrationScene;
-  String dashboardScene;
-  String studentScene;
+  String viewPath,
+      adminstrationScene,
+      dashboardScene,
+      studentScene;
 
   private RegistrationService registrationService;
 
