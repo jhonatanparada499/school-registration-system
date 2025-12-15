@@ -2,23 +2,24 @@ package com.school.app.service;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 import com.school.app.model.Student;
 
 public class StudentService {
+  private static final Path path = Paths.get("data", "Student.csv");
+  private static final String filePath = path.toAbsolutePath().toString();
+
   public static Map<String, Student> load() {
     Map<String, Student> students = new HashMap<>();
 
-    Path path = Paths.get("data", "Student.csv");
-    String filePath = String.valueOf(path);
+    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+      String line;
 
-    try (Scanner scanner = new Scanner(new File(filePath))) {
-      while (scanner.hasNextLine()) {
-        String line = scanner.nextLine();
+      while ((line = reader.readLine()) != null) {
 
         if (line.trim().isEmpty()) {
           continue;
@@ -30,8 +31,6 @@ public class StudentService {
         String nameField = columns[1].trim();
         String majorField = columns[2].trim();
 
-        // Student.csv should have a fourth field similar to
-        // Instructor.csv that lists the classes they are enroolled in
         Student student = new Student(
             idField,
             nameField,
