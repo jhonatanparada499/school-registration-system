@@ -3,6 +3,7 @@ package com.school.app.service;
 import com.school.app.model.*;
 
 import java.util.Map;
+import java.util.Queue;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
@@ -41,11 +42,41 @@ public class RegistrationService {
   }
 
   // SchoolException used by createClassSession
-  class SchoolException extends Exception {
+  public class SchoolException extends Exception {
     public SchoolException(String theMessage) {
       super(theMessage);
     }
   }
+
+  public class StudentIsInClassException extends SchoolException {
+    public StudentIsInClassException(String theMessage) {
+      super(theMessage);
+    }
+
+    public StudentIsInClassException() {
+      super("The student is already in the class.");
+    }
+  }
+
+  public class ClassSectionIsFullException extends SchoolException {
+    public ClassSectionIsFullException(String theMessage) {
+      super(theMessage);
+    }
+
+    public ClassSectionIsFullException() {
+      super("The class session is full");
+    }
+  }
+
+  public class MaximumCreditsLimitException extends SchoolException {
+    public MaximumCreditsLimitException(String theMessage) {
+      super(theMessage);
+    }
+
+    public MaximumCreditsLimitException() {
+      super("Registration would exceed maximum semester credits (18).");
+    }
+  }// Registration would exceed maximum semester credits (18).
 
   public List<Instructor> findEligibleInstructors(
       Course theCourse) {
@@ -136,7 +167,8 @@ public class RegistrationService {
                 classSection.getClassroom().getRoomNumber() + "," +
                 classSection.getSectionNumber() + "," +
                 classSection.getMaxCapacity() + "," +
-                classSection.getEnrolledStudentsSeparatedByPipe() + " ");
+                classSection.getEnrolledStudentsSeparatedByPipe() + "," +
+                classSection.getWaitlistedStudentsSeparatedByPipe() + " ");
         writer.write(System.lineSeparator());
       }
     } catch (Exception e) {
@@ -152,19 +184,19 @@ public class RegistrationService {
     // preconditions: 1. Student is not it the class, 2. the "section"
     // is not full, and the credits are below 18
     if (theSection.getEnrolledStudents().contains(theStudent)) {
-      throw new SchoolException("The student is already in the class.");
+      throw new StudentIsInClassException();
     }
+
     if (theSection.isFull()) {
       // Could throw an exception
-      throw new SchoolException("The class session is full");
+      throw new ClassSectionIsFullException();
     }
 
     Course sectionCourse = theSection.getCourse();
 
     if (theStudent.getCurrentCredits() +
         sectionCourse.getCredits() > 18) {
-      throw new SchoolException(
-          "Registration would exceed maximum semester credits (18).");
+      throw new MaximumCreditsLimitException();
     }
 
     theSection.addEnrolledStudent(theStudent);
@@ -178,6 +210,21 @@ public class RegistrationService {
     }
     theStudent.removeEnrolledClass(theClassSection);
     theClassSection.removeEnrolledStudent(theStudent);
+
+    // add to class students that have been waitlisted after dropping
+    // current student
+    Student nextStudentInQueue = theClassSection.getNextWaitListedStudent();
+    if (nextStudentInQueue == null) {
+      return;
+    }
+    registerStudent(
+        nextStudentInQueue,
+        theClassSection);
+  }
+
+  public void waitListStudent(
+      Student theStudent, ClassSession theClassSection) {
+    theClassSection.addWaitlistedStudent(theStudent);
   }
 
 }

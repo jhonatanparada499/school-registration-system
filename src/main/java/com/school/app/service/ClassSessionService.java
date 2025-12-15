@@ -6,7 +6,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.nio.file.Path;
 
 import com.school.app.model.*;
@@ -42,13 +44,25 @@ public class ClassSessionService {
         int sectionNumberField = Integer.parseInt(columns[4].trim());
         int maxCapacityField = Integer.parseInt(columns[5].trim());
         String enrolledStudentIdsField = columns[6].trim();
+        String waitListedStudentIdsField = columns[7].trim();
 
         String[] array = enrolledStudentIdsField.split("\\|");
 
+        // if data is hello,jhon| marta| max,
+        // we need to trim each item in the array first
+
+        // parse and add enrolled student ids to list
         List<String> enrolledStudentsIds = new ArrayList<>();
         if (!enrolledStudentIdsField.trim().isEmpty()) {
           // cannot be = to Arrayaslist for add method later
           enrolledStudentsIds.addAll(Arrays.asList(array));
+        }
+
+        // parse and add waitlisted students to Queue
+        array = waitListedStudentIdsField.split("\\|");
+        Queue<String> waitListedStudentIds = new LinkedList<>();
+        if (!waitListedStudentIdsField.trim().isEmpty()) {
+          waitListedStudentIds.addAll(Arrays.asList(array));
         }
 
         Course course = theCourses.get(courseIdField);
@@ -63,11 +77,19 @@ public class ClassSessionService {
             sectionNumberField,
             maxCapacityField);
 
-        // add student object to enrolled student in class section
-        for (String studentId : enrolledStudentsIds) {
-          Student student = theStudents.get(studentId);
+        // first add the class section to student. then add that
+        // student to enrolled student in class section
+        for (String enrolledStudentId : enrolledStudentsIds) {
+          Student student = theStudents.get(enrolledStudentId);
           student.addEnrolledClass(classSection);
           classSection.addEnrolledStudent(student);
+        }
+
+        // add waitlisted students to class section
+        for (String waitListedStudentId : waitListedStudentIds) {
+          // maybe add the waitlisetd sections to students in the future.
+          Student student = theStudents.get(waitListedStudentId);
+          classSection.addWaitlistedStudent(student);
         }
 
         // add the class section to the taeching assignment

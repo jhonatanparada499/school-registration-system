@@ -1,7 +1,9 @@
 package com.school.app.model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Methods:
@@ -17,6 +19,7 @@ public class ClassSession {
   private int sectionNumber;
   private int maxCapacity;
   private List<Student> enrolledStudents;
+  private Queue<Student> waitListedStudents;
 
   // constructor to create a new class section
   public ClassSession(
@@ -32,7 +35,9 @@ public class ClassSession {
     classroom = theClassroom;
     sectionNumber = theSectionNumber;
     maxCapacity = theMaxCapacity;
+
     enrolledStudents = new ArrayList<>();
+    waitListedStudents = new LinkedList<>();
   }
 
   public int getId() {
@@ -102,6 +107,14 @@ public class ClassSession {
     return result;
   }
 
+  public String getWaitlistedStudentsSeparatedByPipe() {
+    String result = "";
+    for (Student student : waitListedStudents) {
+      result += student.getId() + "|";
+    }
+    return result;
+  }
+
   public String getFormatSectionNumber() {
     return String.format("%03d", getSectionNumber());
   }
@@ -111,13 +124,34 @@ public class ClassSession {
         "%d / %d", getEnrolledStudents().size(), getMaxCapacity());
   }
 
+  public Queue<Student> getWaitListedStudents() {
+    return this.waitListedStudents;
+  }
+
+  public String getFormatWaitListedStudents() {
+    return String.valueOf(getWaitListedStudents().size());
+  }
+
   // Method not specifed in project instructions
   public void addEnrolledStudent(Student theStudent) {
     this.enrolledStudents.add(theStudent);
   }
 
+  public void addWaitlistedStudent(Student theStudent) {
+    this.waitListedStudents.add(theStudent);
+  }
+
   public void removeEnrolledStudent(Student theStudent) {
     this.enrolledStudents.remove(theStudent);
+  }
+
+  public Student getNextWaitListedStudent() {
+    // returns the head of the Queue and removes it
+    return this.waitListedStudents.poll();
+  }
+
+  public boolean isWaitListed(Student theStudent) {
+    return getWaitListedStudents().contains(theStudent);
   }
 
   public boolean isFull() {

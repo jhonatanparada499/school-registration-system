@@ -30,13 +30,16 @@ public class DashboardSceneController {
   @FXML
   private TableColumn<ClassSession, String> courseIdCol;
   @FXML
-  private TableColumn<ClassSession, String> enrolledCapacityCol;
+  private TableColumn<ClassSession, String> sectionNumberCol;
   @FXML
   private TableColumn<ClassSession, String> instructorCol;
   @FXML
   private TableColumn<ClassSession, String> roomIdCol;
   @FXML
-  private TableColumn<ClassSession, String> sectionNumberCol;
+  private TableColumn<ClassSession, String> enrolledCapacityCol;
+  @FXML
+  private TableColumn<ClassSession, String> waitListedCol;
+  @FXML
 
   private Map<Integer, ClassSession> classSections;
 
@@ -68,6 +71,9 @@ public class DashboardSceneController {
 
     enrolledCapacityCol.setCellValueFactory(
         new PropertyValueFactory<>("enrolledCapacity"));
+
+    waitListedCol.setCellValueFactory(
+        new PropertyValueFactory<>("formatWaitListedStudents"));
 
     classSectionsTable.getItems().addAll(classSections.values());
 

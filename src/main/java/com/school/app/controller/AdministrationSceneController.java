@@ -5,10 +5,13 @@ import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.util.Map;
+import java.util.Optional;
+
 import com.school.app.model.*;
 import com.school.app.service.RegistrationService;
 
@@ -18,6 +21,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 import org.controlsfx.control.SearchableComboBox;
+
+import com.school.app.service.RegistrationService.ClassSectionIsFullException;
 
 /**
  * Methods:
@@ -46,7 +51,8 @@ public class AdministrationSceneController {
   private Button BRegister;
 
   private Alert infoAlert,
-      errorAlert;
+      errorAlert,
+      confirmationAlert;
 
   private ObservableList<String> courseChoices,
       studentChoices,
@@ -142,6 +148,12 @@ public class AdministrationSceneController {
 
     errorAlert = new Alert(Alert.AlertType.ERROR);
     errorAlert.setTitle(title);
+
+    confirmationAlert = new Alert(
+        Alert.AlertType.CONFIRMATION,
+        "",
+        ButtonType.YES, ButtonType.NO);
+    confirmationAlert.setTitle(title);
   }
 
   @FXML
@@ -229,10 +241,34 @@ public class AdministrationSceneController {
       infoAlert.showAndWait();
       return;
 
+    } catch (ClassSectionIsFullException e) {
+      //
+      // implement option to waitlist if the student is not yet waitlisted
+      //
+      if (classSection.isWaitListed(student)) {
+        errorAlert.setContentText(
+            "You cannot enroll a student that is waitlisted!");
+        errorAlert.showAndWait();
+        return;
+      }
+
+      // ask if the user wants to wait list student
+      confirmationAlert.setContentText(
+          e.getMessage() + "\n" +
+              "Do you want to waitlist this student?");
+      Optional<ButtonType> result = confirmationAlert.showAndWait();
+      if (result.get() == ButtonType.YES) {
+        registrationService.waitListStudent(
+            student,
+            classSection);
+        infoAlert.setContentText("The student has been waitlisted!");
+        infoAlert.showAndWait();
+      }
+      return;
+
     } catch (Exception e) {
       errorAlert.setContentText(e.getMessage());
       errorAlert.showAndWait();
-      return;
     }
 
   }

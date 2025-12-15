@@ -30,6 +30,7 @@
                   <TableColumn fx:id="instructorCol" prefWidth="120.0" text="Instructor" />
                   <TableColumn fx:id="roomIdCol" prefWidth="80.0" text="Room ID" />
                   <TableColumn fx:id="enrolledCapacityCol" prefWidth="120.0" text="Enrolled/Capacity" />
+                  <TableColumn fx:id="waitListedCol" prefWidth="120.0" text="Wait Listed" />
                </columns>
                <VBox.margin>
                   <Insets left="25.0" right="25.0" />
