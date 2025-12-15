@@ -12,8 +12,6 @@ A desktop administrative application for a college registrar.
 * [Quick Start](#quick-start)
 * [Project File Structure](#project-file-structure)
 * [Task Distribution Table](#task-distribution-table)
-* [Project Modifications](#project-modifications)
-* [Architecture Diagram](#architecture-diagram)
 
 ## Quick Start
 
