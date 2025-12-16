@@ -10,6 +10,7 @@ A desktop administrative application for a college registrar.
 
 ## Table of Contents
 * [Quick Start](#quick-start)
+* [Prerequisites](#Prerequisites)
 * [Project File Structure](#project-file-structure)
 * [Task Distribution Table](#task-distribution-table)
 
@@ -18,6 +19,10 @@ A desktop administrative application for a college registrar.
 ```bash
 mvn clean javafx:run
 ```
+
+## Prerequisites
+- Java Development Kit (JDK) 21+.
+- A build tool such as Maven or Gradle.
 
 ## Project File Structure
 
