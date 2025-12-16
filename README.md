@@ -12,6 +12,7 @@ A desktop administrative application for a college registrar.
 * [Prerequisites](#Prerequisites)
 * [Quick Start](#quick-start)
 * [Project File Structure](#project-file-structure)
+* [Features](#features)
 * [Task Distribution Table](#task-distribution-table)
 
 ## Prerequisites
@@ -23,6 +24,11 @@ A desktop administrative application for a college registrar.
 ```bash
 mvn clean javafx:run
 ```
+
+## Features
+- Data Persistence
+- Search and Filter
+- Waitlist System
 
 ## Project File Structure
 
