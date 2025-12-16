@@ -1,11 +1,9 @@
 package com.school.app.model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
-// import com.school.app.service.CourseService;
-import com.school.app.service.InstructorService;
+import java.util.Queue;
 
 /**
  * Methods:
@@ -15,19 +13,20 @@ import com.school.app.service.InstructorService;
 
 public class ClassSession {
   private int id;
-  private String course;
-  private String instructor;
-  private String classroom;
+  private Course course;
+  private Instructor instructor;
+  private Classroom classroom;
   private int sectionNumber;
   private int maxCapacity;
-  private List<String> enrolledIdStudents;
+  private List<Student> enrolledStudents;
+  private Queue<Student> waitListedStudents;
 
   // constructor to create a new class section
   public ClassSession(
       int theId,
-      String theCourse,
-      String theInstructor,
-      String theClassroom,
+      Course theCourse,
+      Instructor theInstructor,
+      Classroom theClassroom,
       int theSectionNumber,
       int theMaxCapacity) {
     id = theId;
@@ -36,25 +35,9 @@ public class ClassSession {
     classroom = theClassroom;
     sectionNumber = theSectionNumber;
     maxCapacity = theMaxCapacity;
-    enrolledIdStudents = new ArrayList<>();
-  }
 
-  // constructor used to compile existing records
-  public ClassSession(
-      int theId,
-      String theCourse,
-      String theInstructor,
-      String theClassroom,
-      int theSectionNumber,
-      int theMaxCapacity,
-      List<String> theEnrolledStudents) {
-    id = theId;
-    course = theCourse;
-    instructor = theInstructor;
-    classroom = theClassroom;
-    sectionNumber = theSectionNumber;
-    maxCapacity = theMaxCapacity;
-    enrolledIdStudents = theEnrolledStudents;
+    enrolledStudents = new ArrayList<>();
+    waitListedStudents = new LinkedList<>();
   }
 
   public int getId() {
@@ -65,17 +48,33 @@ public class ClassSession {
     return String.valueOf(this.id);
   }
 
-  public String getCourse() {
+  public Course getCourse() {
     return this.course;
   }
 
+  public String getCourseName() {
+    return getCourse().getName();
+  }
+
+  public String getCourseId() {
+    return getCourse().getCourseId();
+  }
+
   // Fix privacy leak in the rest of getter methods
-  public String getInstructor() {
+  public Instructor getInstructor() {
     return this.instructor;
   }
 
-  public String getClassroom() {
-    return classroom;
+  public String getInstructorName() {
+    return getInstructor().getName();
+  }
+
+  public Classroom getClassroom() {
+    return this.classroom;
+  }
+
+  public String getClassroomNumber() {
+    return getClassroom().getRoomNumber();
   }
 
   public int getMaxCapacity() {
@@ -96,40 +95,67 @@ public class ClassSession {
 
   // Method not specified in project instructions
   // This method is similar to the one in Student.java
-  public List<String> getEnrolledStudents() {
-    return new ArrayList<>(enrolledIdStudents);
+  public List<Student> getEnrolledStudents() {
+    return this.enrolledStudents;
   }
 
   public String getEnrolledStudentsSeparatedByPipe() {
     String result = "";
-    for (String studentId : enrolledIdStudents) {
-      result += studentId + "|";
+    for (Student student : this.enrolledStudents) {
+      result += student.getId() + "|";
     }
     return result;
   }
 
-  public String getInstructorName() {
-    Map<String, Instructor> instructors = InstructorService.load();
-    Instructor instructor = instructors.get(this.instructor);
-    return instructor.getName();
+  public String getWaitlistedStudentsSeparatedByPipe() {
+    String result = "";
+    for (Student student : waitListedStudents) {
+      result += student.getId() + "|";
+    }
+    return result;
   }
 
   public String getFormatSectionNumber() {
-    return String.format("%03d", this.sectionNumber);
+    return String.format("%03d", getSectionNumber());
   }
 
   public String getEnrolledCapacity() {
     return String.format(
-        "%d / %d", this.enrolledIdStudents.size(), this.maxCapacity);
+        "%d / %d", getEnrolledStudents().size(), getMaxCapacity());
+  }
+
+  public Queue<Student> getWaitListedStudents() {
+    return this.waitListedStudents;
+  }
+
+  public String getFormatWaitListedStudents() {
+    return String.valueOf(getWaitListedStudents().size());
   }
 
   // Method not specifed in project instructions
   public void addEnrolledStudent(Student theStudent) {
-    this.enrolledIdStudents.add(theStudent.getId());
+    this.enrolledStudents.add(theStudent);
+  }
+
+  public void addWaitlistedStudent(Student theStudent) {
+    this.waitListedStudents.add(theStudent);
+  }
+
+  public void removeEnrolledStudent(Student theStudent) {
+    this.enrolledStudents.remove(theStudent);
+  }
+
+  public Student getNextWaitListedStudent() {
+    // returns the head of the Queue and removes it
+    return this.waitListedStudents.poll();
+  }
+
+  public boolean isWaitListed(Student theStudent) {
+    return getWaitListedStudents().contains(theStudent);
   }
 
   public boolean isFull() {
-    return this.enrolledIdStudents.size() >= this.maxCapacity;
+    return getEnrolledStudents().size() >= getMaxCapacity();
   }
 
 }

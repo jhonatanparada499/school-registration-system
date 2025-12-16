@@ -1,39 +1,40 @@
 package com.school.app.service;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
-import java.util.Scanner;
+import java.util.Queue;
+import java.nio.file.Path;
 
-import com.school.app.model.ClassSession;
+import com.school.app.model.*;
 
 import java.util.List;
 
 public class ClassSessionService {
-  public static Map<Integer, ClassSession> load() {
+  private static final Path path = Paths.get("data", "ClassSession.csv");
+  private static final String filePath = path.toAbsolutePath().toString();
+
+  public static Map<Integer, ClassSession> load(
+      Map<String, Course> theCourses,
+      Map<String, Student> theStudents,
+      Map<String, Instructor> theInstructors,
+      Map<String, Classroom> theClassrooms) {
+
     Map<Integer, ClassSession> classSections = new HashMap<>();
 
-    // Relative path to ClassSession.csv (expects data/ClassSession.csv at project
-    // root)
-    Path path = Paths.get("data", "ClassSession.csv");
-    String filePath = String.valueOf(path);
-
-    // try-resource closes file automatically
-    try (Scanner scanner = new Scanner(new File(filePath))) {
-      while (scanner.hasNextLine()) {
-        String line = scanner.nextLine();
+    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
 
         if (line.trim().isEmpty()) {
           continue;
         }
 
-        // if a field is empty it must have a blank space
-        // it has to do with how split works
-        // make sure csv is , , and not ,,
         String[] columns = line.split(",");
 
         int idField = Integer.parseInt(columns[0]);
@@ -43,23 +44,56 @@ public class ClassSessionService {
         int sectionNumberField = Integer.parseInt(columns[4].trim());
         int maxCapacityField = Integer.parseInt(columns[5].trim());
         String enrolledStudentIdsField = columns[6].trim();
+        String waitListedStudentIdsField = columns[7].trim();
 
         String[] array = enrolledStudentIdsField.split("\\|");
-        List<String> enrolledStudentsIds = new ArrayList<>();
 
+        // if data is hello,jhon| marta| max,
+        // we need to trim each item in the array first
+
+        // parse and add enrolled student ids to list
+        List<String> enrolledStudentsIds = new ArrayList<>();
         if (!enrolledStudentIdsField.trim().isEmpty()) {
           // cannot be = to Arrayaslist for add method later
           enrolledStudentsIds.addAll(Arrays.asList(array));
         }
 
+        // parse and add waitlisted students to Queue
+        array = waitListedStudentIdsField.split("\\|");
+        Queue<String> waitListedStudentIds = new LinkedList<>();
+        if (!waitListedStudentIdsField.trim().isEmpty()) {
+          waitListedStudentIds.addAll(Arrays.asList(array));
+        }
+
+        Course course = theCourses.get(courseIdField);
+        Instructor instructor = theInstructors.get(instructorIdField);
+        Classroom classroom = theClassrooms.get(classroomIdField);
+
         ClassSession classSection = new ClassSession(
             idField,
-            courseIdField,
-            instructorIdField,
-            classroomIdField,
+            course,
+            instructor,
+            classroom,
             sectionNumberField,
-            maxCapacityField,
-            enrolledStudentsIds);
+            maxCapacityField);
+
+        // first add the class section to student. then add that
+        // student to enrolled student in class section
+        for (String enrolledStudentId : enrolledStudentsIds) {
+          Student student = theStudents.get(enrolledStudentId);
+          student.addEnrolledClass(classSection);
+          classSection.addEnrolledStudent(student);
+        }
+
+        // add waitlisted students to class section
+        for (String waitListedStudentId : waitListedStudentIds) {
+          // maybe add the waitlisetd sections to students in the future.
+          Student student = theStudents.get(waitListedStudentId);
+          classSection.addWaitlistedStudent(student);
+        }
+
+        // add the class section to the taeching assignment
+        instructor.addTeachingAssignment(classSection);
 
         classSections.put(
             idField,

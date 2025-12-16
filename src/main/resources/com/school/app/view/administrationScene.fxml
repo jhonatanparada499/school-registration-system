@@ -8,8 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.SearchableComboBox?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.school.app.controller.AdministrationSceneController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -29,23 +30,19 @@
             <HBox alignment="BOTTOM_LEFT" spacing="10.0">
                 
                 <VBox spacing="2.0">
-                    <Label text="Course ID:" />
-                    <ComboBox fx:id="CBCourseId" editable="true" prefWidth="150.0" />
+                    <SearchableComboBox fx:id="SCBCourseId" promptText="Select Course" prefWidth="150.0" />
                 </VBox>
 
                 <VBox spacing="2.0">
-                    <Label text="Instructor ID:" />
-                    <ComboBox fx:id="CBInstructorId" editable="true" prefWidth="150.0" />
+                    <SearchableComboBox fx:id="SCBInstructorId"  promptText="Select Instructor" prefWidth="150.0" />
                 </VBox>
 
                 <VBox spacing="2.0">
-                    <Label text="Room ID:" />
-                    <ComboBox fx:id="CBClassroomId" editable="true" prefWidth="150.0" />
+                    <SearchableComboBox fx:id="SCBClassroomId"  promptText="Select Classroom" prefWidth="150.0" />
                 </VBox>
 
                 <VBox spacing="2.0">
-                    <Label text="Capacity:" />
-               <TextField fx:id="TFCapacity" prefHeight="26.0" prefWidth="65.0" />
+               <TextField fx:id="TFCapacity" prefHeight="26.0" promptText="Capacity" prefWidth="65.0" />
                 </VBox>
                 
                 <Button fx:id="BCreate" mnemonicParsing="false" onAction="#createClassSection" text="Create" />
@@ -66,16 +63,18 @@
             <HBox alignment="BOTTOM_LEFT" spacing="10.0">
                 
                 <VBox spacing="2.0">
-                    <Label text="Student ID:" />
-               <ComboBox fx:id="CBStudentId" editable="true" prefWidth="150.0" />
+               <SearchableComboBox fx:id="SCBStudentId" promptText="Select Student" prefWidth="150.0" />
                 </VBox>
 
                 <VBox spacing="2.0">
-                    <Label text="Section ID:" />
-               <ComboBox fx:id="CBClassSectionId" editable="true" prefWidth="150.0" />
+               <SearchableComboBox fx:id="SCBClassSectionId" promptText="Select Section" prefWidth="150.0" />
                 </VBox>
                 
-                <Button fx:id="BRegister" mnemonicParsing="false" onAction="#registerStudent" text="Register" />
+                <VBox spacing="2.0">
+               <ComboBox fx:id="CBStudentAction" promptText="Select Action" prefWidth="150.0" />
+                </VBox>
+
+                <Button fx:id="BRegister" mnemonicParsing="false" onAction="#registerStudent" text="Do" />
                 
             </HBox>
 

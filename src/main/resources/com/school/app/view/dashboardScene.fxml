@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.school.app.controller.DashboardSceneController">
+<BorderPane prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
@@ -22,7 +22,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <TableView fx:id="classSectionsTable" maxHeight="250.0" prefHeight="250.0" prefWidth="550.0">
+            <TableView fx:id="classSectionsTable" maxWidth="900.0" prefHeight="250.0" prefWidth="550.0">
                <columns>
                   <TableColumn fx:id="idCol" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="ID" />
                   <TableColumn fx:id="courseIdCol" prefWidth="100.0" text="Course ID" />
@@ -30,6 +30,7 @@
                   <TableColumn fx:id="instructorCol" prefWidth="120.0" text="Instructor" />
                   <TableColumn fx:id="roomIdCol" prefWidth="80.0" text="Room ID" />
                   <TableColumn fx:id="enrolledCapacityCol" prefWidth="120.0" text="Enrolled/Capacity" />
+                  <TableColumn fx:id="waitListedCol" prefWidth="120.0" text="Wait Listed" />
                </columns>
                <VBox.margin>
                   <Insets left="25.0" right="25.0" />
@@ -44,6 +45,7 @@
    <bottom>
       <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="BSave" mnemonicParsing="false" onAction="#saveClassSections" text="Save" />
             <Button fx:id="BRefresh" mnemonicParsing="false" onAction="#refreshTable" text="Refresh Data" />
             <Label text="Last updated:" HBox.hgrow="ALWAYS" />
             <Label fx:id="LLastUpdated" text="2023-10-26 10:30 AM" />

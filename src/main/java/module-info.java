@@ -2,6 +2,7 @@ module com.school.app {
   requires transitive javafx.controls;
   requires transitive javafx.fxml;
   requires transitive javafx.graphics;
+  requires org.controlsfx.controls;
 
   // If fxml files are added, they must be declared here as in:
   opens com.school.app.controller to javafx.fxml;

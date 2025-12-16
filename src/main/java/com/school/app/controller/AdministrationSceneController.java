@@ -5,25 +5,24 @@ import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.util.Map;
-import com.school.app.model.Course;
-import com.school.app.model.Instructor;
-import com.school.app.model.Student;
-import com.school.app.service.*;
-import com.school.app.model.Classroom;
-import com.school.app.model.ClassSession;
+import java.util.Optional;
+
+import com.school.app.model.*;
+import com.school.app.service.RegistrationService;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-// import javafx.fxml.FXML;
-// import javafx.scene.control.ComboBox;
-
-import java.util.stream.Collectors;
 
 import javafx.scene.control.Alert;
+
+import org.controlsfx.control.SearchableComboBox;
+
+import com.school.app.service.RegistrationService.ClassSectionIsFullException;
 
 /**
  * Methods:
@@ -34,126 +33,112 @@ import javafx.scene.control.Alert;
 public class AdministrationSceneController {
   @FXML
   private Button BCreate;
-
   @FXML
-  private ComboBox<String> CBCourseId;
-
+  private SearchableComboBox<String> SCBCourseId;
   @FXML
-  private ComboBox<String> CBInstructorId;
-
+  private SearchableComboBox<String> SCBInstructorId;
   @FXML
-  private ComboBox<String> CBClassroomId;
-
+  private SearchableComboBox<String> SCBClassroomId;
   @FXML
   private TextField TFCapacity;
-
   @FXML
-  private ComboBox<String> CBStudentId;
-
+  private SearchableComboBox<String> SCBStudentId;
   @FXML
-  private ComboBox<String> CBClassSectionId;
-
-  FilterableComboBox CBClassSection;
-
+  private SearchableComboBox<String> SCBClassSectionId;
+  @FXML
+  private ComboBox<String> CBStudentAction;
   @FXML
   private Button BRegister;
 
-  //
-  private Alert infoAlert;
+  private Alert infoAlert,
+      errorAlert,
+      confirmationAlert;
 
-  private Alert errorAlert;
+  private ObservableList<String> courseChoices,
+      studentChoices,
+      classroomChoices,
+      instructorChoices,
+      elegibleInstructorChoices,
+      classSectionChoices;
 
-  //
-  private ObservableList<String> courseIds;
-  private ObservableList<String> studentIds;
-  private ObservableList<String> classroomIds;
-  private ObservableList<String> instructorIds;
-  private ObservableList<String> elegibleInstructorIds;
-  private ObservableList<String> classSectionIds;
+  private Map<Integer, ClassSession> classSections;
+  private Map<String, Course> courses;
+  private Map<String, Classroom> classrooms;
+  private Map<String, Student> students;
+  private Map<String, Instructor> instructors;
 
-  //
+  private RegistrationService registrationService;
+
+  private List<Instructor> elegibleInstructors;
+
+  public AdministrationSceneController(
+      Map<Integer, ClassSession> theClassSections,
+      Map<String, Course> theCourses,
+      Map<String, Classroom> theClassrooms,
+      Map<String, Student> theStudents,
+      Map<String, Instructor> theInstructors,
+      RegistrationService theRegistrationService) {
+
+    classSections = theClassSections;
+    courses = theCourses;
+    classrooms = theClassrooms;
+    students = theStudents;
+    instructors = theInstructors;
+    registrationService = theRegistrationService;
+
+    // the choices can be customized, in this case the only show the ids of the
+    // options
+    classSectionChoices = getClassSectionChoices(classSections);
+    courseChoices = getCourseChoices(courses);
+    classroomChoices = getClassroomChoices(classrooms);
+    studentChoices = getStudentChoices(students);
+    instructorChoices = getInstructorChoices(instructors);
+  }
+
   @FXML
   public void initialize() {
-    CBCourseId.setVisibleRowCount(5);
-    CBInstructorId.setVisibleRowCount(5);
-    CBClassroomId.setVisibleRowCount(5);
-    CBStudentId.setVisibleRowCount(5);
-    CBClassSectionId.setVisibleRowCount(5);
+    // add choices to create class section section
+    SCBCourseId.getItems().addAll(courseChoices);
+    SCBInstructorId.getItems().addAll(instructorChoices);
+    SCBClassroomId.getItems().addAll(classroomChoices);
 
-    // load courses
-    Map<String, Course> courses = CourseService.load();
-    // courseids gets the course ids Strings as an List<String>
-    courseIds = FXCollections.observableArrayList(
-        courses.values().stream().map(Course::getCourseId).collect(Collectors.toList()));
+    // disable create button unless choices have been selected
+    BCreate.disableProperty().bind(SCBCourseId.valueProperty().isNull()
+        .or(SCBInstructorId.valueProperty().isNull())
+        .or(SCBClassroomId.valueProperty().isNull()));
 
-    // get classroom ids
-    Map<String, Classroom> classrooms = ClassroomService.load();
-    classroomIds = FXCollections.observableArrayList(
-        classrooms.values().stream().map(Classroom::getRoomNumber).collect(Collectors.toList()));
+    // add choices to register student section
+    SCBStudentId.getItems().addAll(studentChoices);
+    SCBClassSectionId.getItems().addAll(classSectionChoices);
+    CBStudentAction.getItems().addAll("Enroll", "Drop");
 
-    // load student ids
-    Map<String, Student> students = StudentService.load();
-    studentIds = FXCollections.observableArrayList(
-        students.values().stream().map(Student::getId).collect(Collectors.toList()));
-
-    // get instructor ids
-    Map<String, Instructor> instructors = InstructorService.load();
-    instructorIds = FXCollections.observableArrayList(
-        instructors.values().stream().map(Instructor::getId).collect(Collectors.toList()));
-
-    // init class sections
-    Map<Integer, ClassSession> classSections = ClassSessionService.load();
-    classSectionIds = FXCollections.observableArrayList(
-        classSections.values().stream().map(ClassSession::getStringId).collect(Collectors.toList()));
-
-    // helper class for comboboxes courses ids and classroomcs
-    FilterableComboBox CBCourse = new FilterableComboBox(CBCourseId, courseIds);
-    FilterableComboBox CBInstructor = new FilterableComboBox(CBInstructorId, instructorIds);
-
-    // helper class for student ids and classrooms
-    new FilterableComboBox(CBClassroomId, classroomIds);
-    new FilterableComboBox(CBStudentId, studentIds);
-    CBClassSection = new FilterableComboBox(CBClassSectionId, classSectionIds);
+    // disable register button unless choices have been selected
+    BRegister.disableProperty().bind(SCBStudentId.valueProperty().isNull()
+        .or(SCBClassSectionId.valueProperty().isNull())
+        .or(SCBClassSectionId.valueProperty().isNull())
+        .or(CBStudentAction.valueProperty().isNull()));
 
     // attach listener to when the combobox dropdown is displayed and hidden
-    CBCourse.getComboBox().showingProperty().addListener((obs, wasShowing, isNowShowing) -> {
-      if (wasShowing) {
+    SCBCourseId.showingProperty().addListener((obs, wasShowing, isShowing) -> {
 
-        // precondition
-        if (CBCourseId.getValue() == null) {
-          return;
-        }
-
-        // filter to get instructor that can teach course
-        String courseId = CBCourseId.getValue().trim().toUpperCase();
-
-        // preconditions for courseId value in comboboxe
-        if (courseId.trim().isEmpty()) {
-          return;
-        }
-
-        Course course = courses.get(courseId);
-
-        // precondition for course object
-        if (course == null) {
-          return;
-        }
-
-        List<Instructor> elegibleInstructors = RegistrationService.findEligibleInstructors(
-            course);
-
-        // precondition for elegibleInstructors
-        if (elegibleInstructors == null || elegibleInstructors.isEmpty()) {
-          return;
-        }
-
-        elegibleInstructorIds = FXCollections.observableArrayList(
-            elegibleInstructors.stream().map(Instructor::getId).collect(Collectors.toList()));
-
-        CBInstructorId.getEditor().clear();
-
-        CBInstructor.setFilteredItems(elegibleInstructorIds);
+      String courseId = SCBCourseId.getValue();
+      if (courseId == null) {
+        return;
       }
+
+      Course course = courses.get(courseId);
+      if (course == null) {
+        return;
+      }
+
+      // gets elebible instructor depending on selected course id
+      elegibleInstructors = registrationService.findEligibleInstructors(course);
+      elegibleInstructorChoices = getElegibleInstructorChoices(
+          elegibleInstructors);
+
+      // update Instructor Combobox wiht new instructor ids
+      SCBInstructorId.getItems().setAll(elegibleInstructorChoices);
+
     });
 
     // initialize alert windows
@@ -163,39 +148,19 @@ public class AdministrationSceneController {
 
     errorAlert = new Alert(Alert.AlertType.ERROR);
     errorAlert.setTitle(title);
+
+    confirmationAlert = new Alert(
+        Alert.AlertType.CONFIRMATION,
+        "",
+        ButtonType.YES, ButtonType.NO);
+    confirmationAlert.setTitle(title);
   }
 
   @FXML
   private void createClassSection(ActionEvent event) {
-    Map<String, Course> courses = CourseService.load();
-
-    // in case user enters lowercase
-    String courseId = CBCourseId.getValue().trim().toUpperCase();
-    if (courses.get(courseId) == null) {
-      errorAlert.setContentText("Invalid course ID.");
-      errorAlert.showAndWait();
-      return;
-    }
-
-    Map<String, Instructor> instructors = InstructorService.load();
-
-    String instructorId = CBInstructorId.getValue().trim().toUpperCase();
-
-    if (instructors.get(instructorId) == null) {
-      errorAlert.setContentText("Invalid instructor ID.");
-      errorAlert.showAndWait();
-      return;
-    }
-
-    Map<String, Classroom> classrooms = ClassroomService.load();
-
-    String classroomId = CBClassroomId.getValue().trim().toUpperCase();
-
-    if (classrooms.get(classroomId) == null) {
-      errorAlert.setContentText("Invalid classroom ID.");
-      errorAlert.showAndWait();
-      return;
-    }
+    String courseId = SCBCourseId.getValue();
+    String instructorId = SCBInstructorId.getValue();
+    String classroomId = SCBClassroomId.getValue();
 
     int capacity = 0;
     try {
@@ -211,17 +176,23 @@ public class AdministrationSceneController {
       return;
     }
 
-    RegistrationService newRegistration = new RegistrationService();
     try {
-      ClassSession newClassSection = newRegistration.createClassSection(courseId,
+      ClassSession newClassSection = registrationService.createClassSection(
+          courseId,
           instructorId,
           classroomId,
           capacity);
 
-      // write new class sectio to csv file
-      RegistrationService.saveClassSection(newClassSection);
-      // add new section id to class sections combobox
-      CBClassSection.getComboBox().getItems().add(newClassSection.getStringId());
+      // add class section to instructor teaching assignment
+      instructors.get(instructorId).addTeachingAssignment(newClassSection);
+
+      // put new class section in global class sections map
+      classSections.put(
+          newClassSection.getId(), newClassSection);
+
+      // update items in class sections combobox
+      SCBClassSectionId.getItems().setAll(
+          getClassSectionChoices(classSections));
 
     } catch (Exception e) {
       errorAlert.setContentText(e.getMessage());
@@ -235,44 +206,132 @@ public class AdministrationSceneController {
 
   @FXML
   void registerStudent(ActionEvent event) {
-    Map<String, Student> students = StudentService.load();
+    String studentId = SCBStudentId.getValue();
+    int classSectionId = Integer.parseInt(SCBClassSectionId.getValue());
+    String studentAction = CBStudentAction.getValue();
 
-    String studentId = CBStudentId.getValue().trim();
+    Student student = students.get(studentId);
+    ClassSession classSection = classSections.get(classSectionId);
 
-    if (students.get(studentId) == null) {
-      errorAlert.setContentText("The Student ID must be an integer.");
-      errorAlert.showAndWait();
-      return;
-    }
-
-    Map<Integer, ClassSession> classSections = ClassSessionService.load();
-    try {
-      int classSectionId = Integer.parseInt(CBClassSectionId.getValue().trim());
-      if (classSections.get(classSectionId) == null) {
-        errorAlert.setContentText("The Class section ID was not found.");
-        errorAlert.showAndWait();
-        return;
-      }
-
-      RegistrationService newRegistration = new RegistrationService();
+    if (studentAction.equals("Drop")) {
       try {
-        newRegistration.registerStudent(students.get(studentId),
-            classSections.get(classSectionId));
+        registrationService.dropStudent(
+            student, classSection);
+
+        infoAlert.setContentText("The student has been dropped from class section: " +
+            classSection.getId());
+        infoAlert.showAndWait();
+        return;
+
       } catch (Exception e) {
-        // LStudentMessage.setText(e.getMessage());
         errorAlert.setContentText(e.getMessage());
         errorAlert.showAndWait();
         return;
       }
-
-    } catch (Exception e) {
-      errorAlert.setContentText("The class section ID must be an integer.");
-      errorAlert.showAndWait();
-      return;
     }
 
-    infoAlert.setContentText("Student was registered successfully.");
-    infoAlert.showAndWait();
+    // if action is enroll
+    try {
+      // registerStudent adds the student in the class section
+      registrationService.registerStudent(
+          student,
+          classSection);
+
+      infoAlert.setContentText("Student was registered successfully.");
+      infoAlert.showAndWait();
+      return;
+
+    } catch (ClassSectionIsFullException e) {
+      //
+      // implement option to waitlist if the student is not yet waitlisted
+      //
+      if (classSection.isWaitListed(student)) {
+        errorAlert.setContentText(
+            "You cannot enroll a student that is waitlisted!");
+        errorAlert.showAndWait();
+        return;
+      }
+
+      // ask if the user wants to wait list student
+      confirmationAlert.setContentText(
+          e.getMessage() + "\n" +
+              "Do you want to waitlist this student?");
+      Optional<ButtonType> result = confirmationAlert.showAndWait();
+      if (result.get() == ButtonType.YES) {
+        registrationService.waitListStudent(
+            student,
+            classSection);
+        infoAlert.setContentText("The student has been waitlisted!");
+        infoAlert.showAndWait();
+      }
+      return;
+
+    } catch (Exception e) {
+      errorAlert.setContentText(e.getMessage());
+      errorAlert.showAndWait();
+    }
+
+  }
+
+  // fast permormance under 100 items
+  private ObservableList<String> getClassSectionChoices(
+      Map<Integer, ClassSession> theClassSections) {
+
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (ClassSession classSection : theClassSections.values()) {
+      ids.add(String.valueOf(classSection.getId()));
+    }
+    return ids;
+  }
+
+  private ObservableList<String> getElegibleInstructorChoices(
+      List<Instructor> theElegibleInstructors) {
+
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (Instructor instructor : theElegibleInstructors) {
+      ids.add(instructor.getId());
+    }
+    return ids;
+  }
+
+  private ObservableList<String> getCourseChoices(
+      Map<String, Course> theCourses) {
+
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (Course course : theCourses.values()) {
+      ids.add(course.getCourseId());
+    }
+    return ids;
+  }
+
+  private ObservableList<String> getClassroomChoices(
+      Map<String, Classroom> theClassrooms) {
+
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (Classroom classroom : theClassrooms.values()) {
+      ids.add(classroom.getRoomNumber());
+    }
+    return ids;
+  }
+
+  private ObservableList<String> getStudentChoices(
+      Map<String, Student> theStudents) {
+
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (Student student : theStudents.values()) {
+      ids.add(student.getId());
+    }
+    return ids;
+  }
+
+  private ObservableList<String> getInstructorChoices(
+      Map<String, Instructor> theInstructors) {
+
+    ObservableList<String> ids = FXCollections.observableArrayList();
+    for (Instructor instructor : theInstructors.values()) {
+      ids.add(instructor.getId());
+    }
+    return ids;
   }
 
 }
