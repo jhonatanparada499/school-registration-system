@@ -11,8 +11,8 @@ A desktop administrative application for a college registrar.
 ## Table of Contents
 * [Prerequisites](#Prerequisites)
 * [Quick Start](#quick-start)
-* [Project File Structure](#project-file-structure)
 * [Features](#features)
+* [Project File Structure](#project-file-structure)
 * [Task Distribution Table](#task-distribution-table)
 
 ## Prerequisites
