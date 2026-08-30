@@ -1,7 +1,7 @@
 ![Closed Pull Requests](https://img.shields.io/github/issues-pr-closed/jhonatanparada499/school-registration-system)
 ![Open Pull Requests](https://img.shields.io/github/issues-pr/jhonatanparada499/school-registration-system)
 ![Contributors](https://img.shields.io/github/contributors/jhonatanparada499/school-registration-system)
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![Java](https://img.shields.io/badge/language-java-%23ED8B00.svg?&logo=openjdk&logoColor=white)
 
 # School Registration System
 A desktop administrative application for a college registrar.  
