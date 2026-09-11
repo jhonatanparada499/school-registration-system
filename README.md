@@ -3,7 +3,7 @@
 ![Contributors](https://img.shields.io/github/contributors/jhonatanparada499/school-registration-system)
 ![Java](https://img.shields.io/badge/language-java-%23ED8B00.svg?&logo=openjdk&logoColor=white)
 
-<div align="center">This text will be centered</div>
+# <center>School Registration System</center>
 
 A desktop administrative application for a college registrar.  
 
