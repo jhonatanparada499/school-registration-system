@@ -6,7 +6,7 @@
 <div align="center">This text will be centered</div>
 
 A desktop administrative application for a college registrar.  
-  
+
 ![Administraion Tab](images/administration.png)
 
 ## Table of Contents
