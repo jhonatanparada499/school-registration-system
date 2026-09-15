@@ -6,7 +6,7 @@
 
 <h1 align="center">School Registration System</h1>
 
-A desktop administrative application for a college registrar.  
+<p aligh="center">A desktop administrative application for a college registrar.</p>
 
 ![Administraion Tab](images/administration.png)
 
