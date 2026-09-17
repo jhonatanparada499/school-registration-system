@@ -9,7 +9,7 @@
 <p align="center">A desktop administrative application for a college registrar.</p>
 
 <p align="center">
-  <img src="./images/administration.png" style="width: 550px; height: auto" />
+  <img src="./images/administration.png" style="width: 580px; height: auto" />
 </p>
 
 ## Table of Contents
