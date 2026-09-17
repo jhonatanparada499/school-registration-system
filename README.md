@@ -8,7 +8,9 @@
 
 <p align="center">A desktop administrative application for a college registrar.</p>
 
-![Administraion Tab](images/administration.png)
+<p align="center">
+  <img src="./images/administration.png" />
+</p>
 
 ## Table of Contents
 * [Prerequisites](#Prerequisites)
