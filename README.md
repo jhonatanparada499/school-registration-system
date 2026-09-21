@@ -115,12 +115,3 @@ school-registration-system
 | AdministrationSceneController.java | Jhonatan | Completed |
 | DashboardSceneController.java | Jhonatan | Completed |
 | StudentSceneController.java | Jhonatan | Completed |
-
-### GUI View
-| Task | Assigned To | Status |
-| ------------- | -------------- | -------------- |
-| administrationScene.fxml | Jhonatan | Completed |
-| dashboardScene.fxml | Jhonatan | Completed |
-| studentScene.fxml | Jhonatan | Completed |
-| mainScene.fxml | Jhonatan | Completed |
-
