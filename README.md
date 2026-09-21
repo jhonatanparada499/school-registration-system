@@ -67,7 +67,7 @@ school-registration-system
     │   │               │    ├── CourseService.java
     │   │               │    ├── InstructorService.java
     │   │               │    └── StudentService.java
-    │   │               ├── Main.java
+    │   │               └── Main.java
     │   └── module-info.java
     └── resources
         └── com
