@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://img.shields.io/github/issues-pr-closed/jhonatanparada499/school-registration-system" alt="issues-pr-closed" />
   <img src="https://img.shields.io/github/contributors/jhonatanparada499/school-registration-system" />
-  <img src="https://img.shields.io/badge/language-java-%23ED8B00.svg?&logo=openjdk&logoColor=white" />
+  <img src="https://img.shields.io/badge/language-java-%23ED8B00.svg" />
 </p>
 
 <h1 align="center">School Registration System</h1>
