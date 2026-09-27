@@ -18,6 +18,7 @@
 * [Features](#features)
 * [Project File Structure](#project-file-structure)
 * [Task Distribution Table](#task-distribution-table)
+* [Future Features](#future-features)
 
 ## Prerequisites
 - Java Development Kit (JDK) 21+.
@@ -114,3 +115,6 @@ school-registration-system
 | MainSceneController.java | Jhonatan | Completed |
 | AdministrationSceneController.java | Jhonatan | Completed |
 | DashboardSceneController.java | Jhonatan | Completed |
+
+## Future Features
+- Docker App
