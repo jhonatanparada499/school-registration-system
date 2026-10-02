@@ -114,7 +114,6 @@ school-registration-system
 | ------------- | -------------- | -------------- |
 | MainSceneController.java | Jhonatan | Completed |
 | AdministrationSceneController.java | Jhonatan | Completed |
-| DashboardSceneController.java | Jhonatan | Completed |
 
 ## Future Features
 - Docker App
