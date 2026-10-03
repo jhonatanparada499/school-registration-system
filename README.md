@@ -113,7 +113,6 @@ school-registration-system
 | Task | Assigned To | Status |
 | ------------- | -------------- | -------------- |
 | MainSceneController.java | Jhonatan | Completed |
-| AdministrationSceneController.java | Jhonatan | Completed |
 
 ## Future Features
 - Docker App
