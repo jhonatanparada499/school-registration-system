@@ -109,10 +109,5 @@ school-registration-system
 | Define setters for Instructor.java | Isaias | Completed |
 | Define setters for Course.java | Isaias | Completed |
 
-### Controllers
-| Task | Assigned To | Status |
-| ------------- | -------------- | -------------- |
-| MainSceneController.java | Jhonatan | Completed |
-
 ## Future Features
 - Docker App
