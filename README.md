@@ -107,7 +107,6 @@ school-registration-system
 | ------------- | -------------- | -------------- |
 | Define setters for Student.java | Camille | Completed |
 | Define setters for Instructor.java | Isaias | Completed |
-| Define setters for Course.java | Isaias | Completed |
 
 ## Future Features
 - Docker App
