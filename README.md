@@ -106,7 +106,6 @@ school-registration-system
 | Task | Assigned To | Status |
 | ------------- | -------------- | -------------- |
 | Define setters for Student.java | Camille | Completed |
-| Define setters for Instructor.java | Isaias | Completed |
 
 ## Future Features
 - Docker App
