@@ -102,10 +102,5 @@ school-registration-system
 | ClassSessionService.java | Jhonatan | Completed |
 | StudentService.java | Jhonatan | Completed |
 
-### Setters
-| Task | Assigned To | Status |
-| ------------- | -------------- | -------------- |
-| Define setters for Student.java | Camille | Completed |
-
 ## Future Features
 - Docker App
