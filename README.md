@@ -105,3 +105,4 @@ school-registration-system
 ## Future Features
 - Implement container database
 - Sugested worklows: Publish Java Package with Maven
+- Add Sql database support and integration
