@@ -74,7 +74,7 @@
                <ComboBox fx:id="CBStudentAction" promptText="Select Action" prefWidth="150.0" />
                 </VBox>
 
-                <Button fx:id="BRegister" mnemonicParsing="false" onAction="#registerStudent" text="Do" />
+                <Button fx:id="BRegister" mnemonicParsing="false" onAction="#registerStudent" text="Register" />
                 
             </HBox>
 
