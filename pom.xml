@@ -58,12 +58,14 @@
 
   <build>
     <plugins>
+      <!-- https://github.com/javafx-maven-plugin/javafx-maven-plugin -->
       <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
           <mainClass>com.school.app/com.school.app.Main</mainClass>
+          <launcher>school-registration-system</launcher>
         </configuration>
         <dependencies>
           <dependency>
