@@ -22,12 +22,21 @@
 
 ## Prerequisites
 - Java Development Kit (JDK) 21+.
+```
+sudo apt install default-jdk # for compiling and running Java app
+```
 - A build tool such as Maven or Gradle.
 
 ## Quick Start
 
 ```bash
 mvn clean javafx:run
+```
+
+## Nuances
+JRE is required for running Jar files on Ubuntu. Checkout [How to Install Java on Ubuntu and Linux Mint](https://itsfoss.com/install-java-ubuntu/)
+```
+sudo apt install default-jre # for only running java apps
 ```
 
 ## Features
