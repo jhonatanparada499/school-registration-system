@@ -8,11 +8,14 @@ import javafx.scene.Parent;
 import java.net.URL;
 
 /**
- *
  * Inspiration: https://www.vojtechruzicka.com/javafx-fxml-scene-builder/
  */
 
 public class Main extends Application {
+
+  /**
+   * https://docs.oracle.com/javafx/2/get_started/fxml_tutorial.htm
+   */
 
   @Override
   public void start(Stage primaryStage) {
@@ -33,6 +36,6 @@ public class Main extends Application {
   }
 
   public static void main(String[] args) {
-    launch();
+    launch(); // args
   }
 }
