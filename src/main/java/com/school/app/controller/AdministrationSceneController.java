@@ -218,8 +218,17 @@ public class AdministrationSceneController {
         registrationService.dropStudent(
             student, classSection);
 
-        infoAlert.setContentText("The student has been dropped from class section: " +
+        String message = String.format(
+            """
+                The Student %s, with ID: %s
+                has been dropped from class
+                section %s, with ID: %d
+                """,
+            student.getName(), student.getId(),
+            classSection.getCourseName(),
             classSection.getId());
+
+        infoAlert.setContentText(message);
         infoAlert.showAndWait();
         return;
 
