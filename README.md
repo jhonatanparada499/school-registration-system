@@ -101,7 +101,6 @@ school-registration-system
 | InstructorService.java | Jhonatan | Completed |
 | RegistrationService.java | Jhonatan | Completed |
 | CourseService.java | Isaias | Completed |
-| ClassroomService.java | Camille | Completed |
 
 ## Future Features
 - Implement container database
