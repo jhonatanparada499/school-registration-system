@@ -4,7 +4,9 @@
   <img src="https://img.shields.io/badge/language-java-%23ED8B00.svg" />
 </p>
 
-<h1 align="center">School Registration System</h1>
+<h1 align="center">
+  School Registration System
+</h1>
 
 <p align="center">A desktop administrative application for a college registrar.</p>
 
