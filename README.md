@@ -97,13 +97,6 @@ school-registration-system
 | ClassSession.java | Jhonatan | Completed |
 | Instructor.java | Jhonatan | Completed |
 
-### Services
-| Task | Assigned To | Status |
-| ------------- | -------------- | -------------- |
-| InstructorService.java | Jhonatan | Completed |
-| RegistrationService.java | Jhonatan | Completed |
-| CourseService.java | Isaias | Completed |
-
 ## Future Features
 - Implement container database
 - Publish Java Package with Maven [workflow link](https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path)
