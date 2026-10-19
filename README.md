@@ -86,17 +86,6 @@ school-registration-system
                         └── mainScene.fxml
 ```
 
-## Task Distribution Table  
-
-### Models
-| Task | Assigned To | Status |
-| ------------- | -------------- | -------------- |
-| Course.java | Isaias | Completed |
-| Classroom.java | Camille | Completed |
-| Student.java | Jhonatan | Completed |
-| ClassSession.java | Jhonatan | Completed |
-| Instructor.java | Jhonatan | Completed |
-
 ## Future Features
 - Implement container database
 - Publish Java Package with Maven [workflow link](https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path)
