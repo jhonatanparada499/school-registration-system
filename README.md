@@ -21,7 +21,6 @@
 * [Quick Start](#quick-start)
 * [Features](#features)
 * [Project File Structure](#project-file-structure)
-* [Task Distribution Table](#task-distribution-table)
 * [Future Features](#future-features)
 
 ## Prerequisites
