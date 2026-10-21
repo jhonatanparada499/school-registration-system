@@ -8,7 +8,9 @@
   School Registration System
 </h1>
 
-<p align="center">A desktop administrative application for a college registrar.</p>
+<p align="center">
+  A desktop administrative application for a college registrar.
+</p>
 
 <p align="center">
   <img src="./docs/images/administration.png" style="width: 580px; height: auto" />
