@@ -91,4 +91,6 @@ school-registration-system
 - Implement container database
 - Publish Java Package with Maven [workflow link](https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path)
 - Add Sql database support and integration
-- investigate package/binary distribution to different OSs
+- investigate package/binary distribution to different OSs  
+    - Publish first .deb installer release for Linux Mint/Ubuntu
+    - Then create a workflow to automate process based tag creation
