@@ -1,2 +1,4 @@
 1. javafx-maven-plugin is used to assemble and strip down the applications (via jlink)
-2. Use Jpackage to turn that assembly into a installer or executable
+
+Source: https://dev.java/learn/jvm/other-tools/jpackage/
+2. Use Jpackage to turn that assembly into a installer or executable. 
