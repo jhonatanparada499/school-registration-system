@@ -92,4 +92,3 @@ school-registration-system
 - Publish Java Package with Maven [workflow link](https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path)
 - Add Sql database support and integration
 - investigate package/binary distribution to different OSs
-- Remove redundant "Controller" words for files in Controller directory
