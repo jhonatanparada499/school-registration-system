@@ -89,10 +89,7 @@ school-registration-system
 
 ## Future Features
 - Implement container database
-- Publish Java Package with Maven [workflow link](https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path)
+- fix error in csv lookup in service files
 - Add Sql database support and integration
 - investigate package/binary distribution to different OSs  
-    - Publish first .deb installer release for Linux Mint/Ubuntu
-    - Then create a workflow to automate process based tag creation
-- Make notes md
-- Research standard way to publish appimages and deb installers and tags
+    - automate release process based tag creation
