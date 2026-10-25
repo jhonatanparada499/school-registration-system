@@ -16,3 +16,15 @@ jpackage --type app-image \
 --java-options \
 --enable-native-access=javafx.graphics \
 --dest target/dist
+
+# Creates a DEB package
+jpackage \
+  --type deb \
+  --app-image target/image \
+  --name "School Registration System" \
+  --dest target/dist \
+  --app-version "1.0.0" \
+  --linux-shortcut
+
+# or --app-image target/dist/school-registration-system \
+# runtime-image target/image
