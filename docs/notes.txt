@@ -1,4 +1,18 @@
+Reference: https://dev.to/cherrychain/javafx-jlink-and-jpackage-h9
+
 1. javafx-maven-plugin is used to assemble and strip down the applications (via jlink)
 
 Source: https://dev.java/learn/jvm/other-tools/jpackage/
 2. Use Jpackage to turn that assembly into a installer or executable. 
+
+https://encodera.com/en/java/frameworks/javafx/app/packaging
+
+
+# Creates an app image
+jpackage --type app-image \
+--name school-registration-system \
+--runtime-image target/image \
+--module com.school.app/com.school.app.Main \
+--java-options \
+--enable-native-access=javafx.graphics \
+--dest target/dist
