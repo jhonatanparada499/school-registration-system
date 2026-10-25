@@ -94,3 +94,5 @@ school-registration-system
 - investigate package/binary distribution to different OSs  
     - Publish first .deb installer release for Linux Mint/Ubuntu
     - Then create a workflow to automate process based tag creation
+- Make notes md
+- Research standard way to publish appimages and deb installers and tags
