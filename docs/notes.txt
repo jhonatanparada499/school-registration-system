@@ -5,9 +5,8 @@ Reference: https://dev.to/cherrychain/javafx-jlink-and-jpackage-h9
 Source: https://dev.java/learn/jvm/other-tools/jpackage/
 2. Use Jpackage to turn that assembly into a installer or executable. 
 
+3. jpackage usage to create a deb package from runtime-image
 https://encodera.com/en/java/frameworks/javafx/app/packaging
-
-
 # Creates an AppImage
 jpackage --type app-image \
 --name school-registration-system \
