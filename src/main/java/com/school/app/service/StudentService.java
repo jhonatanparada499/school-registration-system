@@ -13,6 +13,9 @@ public class StudentService {
   private static final Path path = Paths.get("data", "Student.csv");
   private static final String filePath = path.toAbsolutePath().toString();
 
+  /**
+   * Func that loads student.csv data
+   */
   public static Map<String, Student> load() {
     Map<String, Student> students = new HashMap<>();
 
