@@ -88,9 +88,6 @@ school-registration-system
 ```
 
 ## Future Features
-- Investigate and add postinst and prerm to add symbolic link for application [1](https://www.hivelocity.net/kb/what-are-preinst-postinst-prerm-and-postrm-script-2/)
 - Implement container database
 - fix error in csv lookup in service files
 - Add Sql database support and integration
-- investigate package/binary distribution to different OSs  
-    - automate release process based tag creation
