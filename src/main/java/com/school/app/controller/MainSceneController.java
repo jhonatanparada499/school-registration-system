@@ -45,6 +45,7 @@ public class MainSceneController {
     students = StudentService.load();
     classrooms = ClassroomService.load();
     courses = CourseService.load();
+    // Instructor constructor needs qualified courses for profs
     instructors = InstructorService.load(courses);
 
     classSections = ClassSessionService.load(
