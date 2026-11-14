@@ -91,3 +91,7 @@ school-registration-system
 - Implement container database
 - fix error in csv lookup in service files
 - Add Sql database support and integration
+- Can app be containerized?
+  - https://medium.com/@jharvey1012/a-beginners-guide-to-creating-a-containerized-web-application-development-environment-with-docker-e903169004ff
+  - https://aboullaite.me/javafx-docker/
+  - https://www.geeksforgeeks.org/devops/build-and-deploy-java-application-with-docker/
