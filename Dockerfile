@@ -8,3 +8,13 @@
 #
 # Docker file examples implementation: https://github.com/carlossg/docker-maven/blob/6b179e3a37bb4aa699e11d9dbb2431fcc55030fd/eclipse-temurin-21-noble-maven-4/Dockerfile
 FROM maven:3.5.2-jdk-8-alpine AS build
+
+WORKDIR /app
+COPY pom.xml .
+
+# Cache dependency
+#  mvn dependency:go-offline
+
+COPY src ./src
+
+RUN mvn clean javafx:jlink
